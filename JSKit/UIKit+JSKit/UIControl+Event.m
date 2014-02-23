@@ -39,15 +39,15 @@ static void *kControlBlocks;
 @implementation JSEventHandler
 
 - (instancetype)initWithBlock:(void (^)(id sender))block forControlEvents:(UIControlEvents)controlEvents {
-	if ((self = [super init])) {
-		self.actionBlock = block;
-		self.controlEvents = controlEvents;
-	}
-	return self;
+    if ((self = [super init])) {
+        self.actionBlock = block;
+        self.controlEvents = controlEvents;
+    }
+    return self;
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-	return [[JSEventHandler alloc] initWithBlock:self.actionBlock forControlEvents:self.controlEvents];
+    return [[JSEventHandler alloc] initWithBlock:self.actionBlock forControlEvents:self.controlEvents];
 }
 
 - (void)invoke:(id)sender {
@@ -61,57 +61,57 @@ static void *kControlBlocks;
 
 - (void)addEventBlock:(void (^)(id))block forControlEvents:(UIControlEvents)controlEvents {
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
-	if (!events) {
-		events = [NSMutableDictionary dictionary];
-		[self associateValue:events withKey:&kControlBlocks];
-	}
-	
-	NSNumber *key = @(controlEvents);
-	NSMutableSet *handlers = events[key];
-	if (!handlers) {
-		handlers = [NSMutableSet set];
-		events[key] = handlers;
-	}
-	
-	JSEventHandler *target = [[JSEventHandler alloc] initWithBlock:block forControlEvents:controlEvents];
-	[handlers addObject:target];
-	[self addTarget:target action:@selector(invoke:) forControlEvents:controlEvents];
+    if (!events) {
+        events = [NSMutableDictionary dictionary];
+        [self associateValue:events withKey:&kControlBlocks];
+    }
+    
+    NSNumber *key = @(controlEvents);
+    NSMutableSet *handlers = events[key];
+    if (!handlers) {
+        handlers = [NSMutableSet set];
+        events[key] = handlers;
+    }
+    
+    JSEventHandler *target = [[JSEventHandler alloc] initWithBlock:block forControlEvents:controlEvents];
+    [handlers addObject:target];
+    [self addTarget:target action:@selector(invoke:) forControlEvents:controlEvents];
 }
 
 - (void)removeEventBlocksForControlEvents:(UIControlEvents)controlEvents {
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
-	if (!events) {
-		events = [NSMutableDictionary dictionary];
-		[self associateValue:events withKey:&kControlBlocks];
-	}
-	
-	NSNumber *key = @(controlEvents);
-	NSSet *handlers = events[key];
+    if (!events) {
+        events = [NSMutableDictionary dictionary];
+        [self associateValue:events withKey:&kControlBlocks];
+    }
     
-	if (!handlers)
-		return;
+    NSNumber *key = @(controlEvents);
+    NSSet *handlers = events[key];
     
-	[handlers enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+    if (!handlers)
+        return;
+    
+    [handlers enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self removeTarget:obj action:NULL forControlEvents:controlEvents];
     }];
-	
-	[events removeObjectForKey:key];
+    
+    [events removeObjectForKey:key];
 }
 
 - (BOOL)hasEventBlocksForControlEvents:(UIControlEvents)controlEvents {
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
-	if (!events) {
-		events = [NSMutableDictionary dictionary];
-		[self associateValue:events withKey:&kControlBlocks];
-	}
-	
-	NSNumber *key = @(controlEvents);
-	NSSet *handlers = events[key];
-	
-	if (!handlers)
-		return NO;
-	
-	return handlers.count;
+    if (!events) {
+        events = [NSMutableDictionary dictionary];
+        [self associateValue:events withKey:&kControlBlocks];
+    }
+    
+    NSNumber *key = @(controlEvents);
+    NSSet *handlers = events[key];
+    
+    if (!handlers)
+        return NO;
+    
+    return handlers.count;
 }
 
 @end
