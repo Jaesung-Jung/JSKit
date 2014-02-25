@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		290161C618BC926100F93263 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 290161C518BC926100F93263 /* UIImage+Color.m */; };
 		4B43814E18B9CC5D0051FC0D /* JSCircularImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */; };
 		4B43815C18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815B18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m */; };
 		4B43815F18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815E18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m */; };
@@ -45,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		290161C418BC925C00F93263 /* UIImage+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
+		290161C518BC926100F93263 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		4B43814C18B9CC5D0051FC0D /* JSCircularImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCircularImageView.h; sourceTree = "<group>"; };
 		4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCircularImageView.m; sourceTree = "<group>"; };
 		4B43815A18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBlurEffectImageDemoViewController.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				4BB96F5218B8EE97009AEB91 /* UIControl+Event.m */,
 				4BB96F4E18B8EE97009AEB91 /* UIImage+BlurEffects.h */,
 				4BB96F5318B8EE97009AEB91 /* UIImage+BlurEffects.m */,
+				290161C418BC925C00F93263 /* UIImage+Color.h */,
+				290161C518BC926100F93263 /* UIImage+Color.m */,
 				4BB96F4F18B8EE97009AEB91 /* UIView+Animation.h */,
 				4BB96F5418B8EE97009AEB91 /* UIView+Animation.m */,
 				4BB96F5018B8EE97009AEB91 /* UIView+Properties.h */,
@@ -359,6 +364,7 @@
 				4B91602F18B8E9980068D4A9 /* JSViewController.m in Sources */,
 				4B43814E18B9CC5D0051FC0D /* JSCircularImageView.m in Sources */,
 				4BB96F5718B8EE97009AEB91 /* UIControl+Event.m in Sources */,
+				290161C618BC926100F93263 /* UIImage+Color.m in Sources */,
 				4B91602918B8E9980068D4A9 /* JSAppDelegate.m in Sources */,
 				4BB96F4A18B8EE39009AEB91 /* NSDate+String.m in Sources */,
 			);
