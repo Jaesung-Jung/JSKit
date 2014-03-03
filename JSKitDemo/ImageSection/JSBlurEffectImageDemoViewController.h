@@ -21,9 +21,7 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
-
-#import "JSKit.h"
+@import UIKit;
 
 @interface JSBlurEffectImageDemoViewController : UIViewController
 

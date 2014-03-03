@@ -22,6 +22,7 @@
 //
 
 #import "JSBlurEffectImageDemoViewController.h"
+#import "JSKit.h"
 
 @interface JSBlurEffectImageDemoViewController ()
 

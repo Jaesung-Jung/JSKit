@@ -23,8 +23,6 @@
 
 @import UIKit;
 
-#import "JSKit.h"
-
 @interface JSAnimationStepDemoViewController : UIViewController
 
 @end

@@ -22,6 +22,7 @@
 //
 
 #import "JSAnimationStepDemoViewController.h"
+#import "JSKit.h"
 
 @interface JSAnimationStepDemoViewController ()
 
