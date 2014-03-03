@@ -1,6 +1,5 @@
 //
 //  JSImageColorViewController.h
-//  JSKit
 //
 //  Copyright (c) 2014 Jaesung Jung
 //
