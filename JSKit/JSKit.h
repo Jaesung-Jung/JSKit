@@ -29,6 +29,7 @@
 #import "UIColor+Colors.h"
 #import "UIControl+Event.h"
 #import "UIImage+BlurEffects.h"
+#import "UIImage+Color.h"
 #import "UIView+Animation.h"
 #import "UIView+Properties.h"
 

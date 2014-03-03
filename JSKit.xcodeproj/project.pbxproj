@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		290161C618BC926100F93263 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 290161C518BC926100F93263 /* UIImage+Color.m */; };
+		4B3CFC7D18C48430007DCCCB /* JSImageColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3CFC7C18C48430007DCCCB /* JSImageColorViewController.m */; };
 		4B43814E18B9CC5D0051FC0D /* JSCircularImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */; };
 		4B43815C18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815B18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m */; };
 		4B43815F18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815E18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m */; };
@@ -48,6 +49,8 @@
 /* Begin PBXFileReference section */
 		290161C418BC925C00F93263 /* UIImage+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
 		290161C518BC926100F93263 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
+		4B3CFC7B18C48430007DCCCB /* JSImageColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSImageColorViewController.h; sourceTree = "<group>"; };
+		4B3CFC7C18C48430007DCCCB /* JSImageColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSImageColorViewController.m; sourceTree = "<group>"; };
 		4B43814C18B9CC5D0051FC0D /* JSCircularImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCircularImageView.h; sourceTree = "<group>"; };
 		4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCircularImageView.m; sourceTree = "<group>"; };
 		4B43815A18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBlurEffectImageDemoViewController.h; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 			children = (
 				4B43815A18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.h */,
 				4B43815B18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m */,
+				4B3CFC7B18C48430007DCCCB /* JSImageColorViewController.h */,
+				4B3CFC7C18C48430007DCCCB /* JSImageColorViewController.m */,
 			);
 			path = ImageSection;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				4BB96F5618B8EE97009AEB91 /* UIColor+Colors.m in Sources */,
 				4BB96F5A18B8EE97009AEB91 /* UIView+Properties.m in Sources */,
 				4BB96F5D18B8EF6C009AEB91 /* JSAnimationStep.m in Sources */,
+				4B3CFC7D18C48430007DCCCB /* JSImageColorViewController.m in Sources */,
 				4B43815F18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m in Sources */,
 				4BB96F5918B8EE97009AEB91 /* UIView+Animation.m in Sources */,
 				4B43815C18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m in Sources */,

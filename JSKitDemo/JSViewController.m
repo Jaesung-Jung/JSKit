@@ -59,7 +59,8 @@
 
     self.testItemTable = @{@"Animation" : @[[JSTestItem itemWithTestName:@"Animation Step"      segueIdentifier:@"AnimationStepSegue"]],
                            @"Image"     : @[[JSTestItem itemWithTestName:@"Blur Effect Image"   segueIdentifier:@"BlurEffectImageSegue"],
-                                            [JSTestItem itemWithTestName:@"Circular Image View" segueIdentifier:@"CircularImageViewSegue"]]};
+                                            [JSTestItem itemWithTestName:@"Circular Image View" segueIdentifier:@"CircularImageViewSegue"],
+                                            [JSTestItem itemWithTestName:@"Image Color" segueIdentifier:@"ImageColorSegue"]]};
 
     self.testItemSections = [self.testItemTable allKeys];
 }
