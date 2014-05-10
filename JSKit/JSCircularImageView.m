@@ -35,7 +35,7 @@
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.bounds = self.frame;
     maskLayer.path = CGPathCreateWithEllipseInRect(self.frame, NULL);
-    maskLayer.position = CGPointMake(self.frame.size.width / 2.0f, self.frame.size.height / 2.0f);;
+    maskLayer.position = CGPointMake(self.frame.size.width / 2.0, self.frame.size.height / 2.0);;
 
     [self.layer setMask:maskLayer];
 }

@@ -39,23 +39,23 @@
     [super viewDidLoad];
     self.animateView.backgroundColor = [UIColor ios7_orange];
 
-    JSAnimationStep *step1 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
+    JSAnimationStep *step1 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
         self.animateView.backgroundColor = [UIColor ios7_green];
     } completion:nil];
-    JSAnimationStep *step2 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
-        self.animateView.alpha = 0.0f;
+    JSAnimationStep *step2 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
+        self.animateView.alpha = 0.0;
     } completion:nil];
-    JSAnimationStep *step3 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
-        self.animateView.alpha = 1.0f;
+    JSAnimationStep *step3 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
+        self.animateView.alpha = 1.0;
     } completion:nil];
-    JSAnimationStep *step4 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
+    JSAnimationStep *step4 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
         self.animateView.backgroundColor = [UIColor ios7_orange];
     } completion:nil];
-    JSAnimationStep *step5 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
-        self.animateView.frameY += 100;
+    JSAnimationStep *step5 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
+        self.animateView.frameY += 100.0;
     } completion:nil];
-    JSAnimationStep *step6 = [JSAnimationStep animationStepWithDuration:1.0f animations:^{
-        self.animateView.frameY -= 100;
+    JSAnimationStep *step6 = [JSAnimationStep animationStepWithDuration:1.0 animations:^{
+        self.animateView.frameY -= 100.0;
     } completion:^(BOOL finished) {
         self.startAnimationButton.enabled = YES;
     }];

@@ -29,12 +29,12 @@
 
 - (UIImage *)snapshot
 {
-    return [self snapshotWithFrame:self.frame scale:0.0f];
+    return [self snapshotWithFrame:self.frame scale:0.0];
 }
 
 - (UIImage *)snapshotWithFrame:(CGRect)frame
 {
-    return [self snapshotWithFrame:frame scale:0.0f];
+    return [self snapshotWithFrame:frame scale:0.0];
 }
 
 - (UIImage *)snapshotWithScale:(CGFloat)scale

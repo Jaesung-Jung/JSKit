@@ -27,82 +27,82 @@
 
 + (UIColor *)ios7_red
 {
-    return [UIColor colorWithRed:1.000f green:0.231f blue:0.188f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.231 blue:0.188 alpha:1.000];
 }
 
 + (UIColor *)ios7_deepRed
 {
-    return [UIColor colorWithRed:1.000f green:0.227f blue:0.176f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.227 blue:0.176 alpha:1.000];
 }
 
 + (UIColor *)ios7_orange
 {
-    return [UIColor colorWithRed:1.000f green:0.584f blue:0.000f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.584 blue:0.000 alpha:1.000];
 }
 
 + (UIColor *)ios7_yellow
 {
-    return [UIColor colorWithRed:1.000f green:0.800f blue:0.000f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.800 blue:0.000 alpha:1.000];
 }
 
 + (UIColor *)ios7_green
 {
-    return [UIColor colorWithRed:0.298f green:0.851f blue:0.392f alpha:1.000f];
+    return [UIColor colorWithRed:0.298 green:0.851 blue:0.392 alpha:1.000];
 }
 
 + (UIColor *)ios7_lightGreen
 {
-    return [UIColor colorWithRed:0.878f green:0.973f blue:0.847f alpha:1.000f];
+    return [UIColor colorWithRed:0.878 green:0.973 blue:0.847 alpha:1.000];
 }
 
 + (UIColor *)ios7_blue
 {
-    return [UIColor colorWithRed:0.000f green:0.478f blue:1.000f alpha:1.000f];
+    return [UIColor colorWithRed:0.000 green:0.478 blue:1.000 alpha:1.000];
 }
 
 + (UIColor *)ios7_lightBlue
 {
-    return [UIColor colorWithRed:0.204f green:0.667f blue:0.863f alpha:1.000f];
+    return [UIColor colorWithRed:0.204 green:0.667 blue:0.863 alpha:1.000];
 }
 
 + (UIColor *)ios7_violet
 {
-    return [UIColor colorWithRed:0.345f green:0.337f blue:0.839f alpha:1.000f];
+    return [UIColor colorWithRed:0.345 green:0.337 blue:0.839 alpha:1.000];
 }
 
 + (UIColor *)ios7_pink
 {
-    return [UIColor colorWithRed:1.000f green:0.286f blue:0.506f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.286 blue:0.506 alpha:1.000];
 }
 
 + (UIColor *)ios7_lightPink
 {
-    return [UIColor colorWithRed:1.000f green:0.827f blue:0.878f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.827 blue:0.878 alpha:1.000];
 }
 
 + (UIColor *)ios7_hotPink
 {
-    return [UIColor colorWithRed:1.000f green:0.176f blue:0.333f alpha:1.000f];
+    return [UIColor colorWithRed:1.000 green:0.176 blue:0.333 alpha:1.000];
 }
 
 + (UIColor *)ios7_gray
 {
-    return [UIColor colorWithRed:0.557f green:0.557f blue:0.576f alpha:1.000f];
+    return [UIColor colorWithRed:0.557 green:0.557 blue:0.576 alpha:1.000];
 }
 
 + (UIColor *)ios7_lightGray
 {
-    return [UIColor colorWithRed:0.741f green:0.745f blue:0.761f alpha:1.000f];
+    return [UIColor colorWithRed:0.741 green:0.745 blue:0.761 alpha:1.000];
 }
 
 + (UIColor *)ios7_white
 {
-    return [UIColor colorWithWhite:0.969f alpha:1.000f];
+    return [UIColor colorWithWhite:0.969 alpha:1.000];
 }
 
 + (UIColor *)ios7_black
 {
-    return [UIColor colorWithRed:0.122f green:0.122f blue:0.129f alpha:1.000f];
+    return [UIColor colorWithRed:0.122 green:0.122 blue:0.129 alpha:1.000];
 }
 
 @end

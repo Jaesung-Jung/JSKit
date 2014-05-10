@@ -105,25 +105,25 @@
 
 - (UIImage *)applyLightBlurEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:1.0f alpha:0.3f];
-    return [self applyBlurEffectWithRadius:30.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    return [self applyBlurEffectWithRadius:30.0 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
 }
 
 - (UIImage *)applyExtraLightBlurEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.97f alpha:0.82f];
-    return [self applyBlurEffectWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:0.97 alpha:0.82];
+    return [self applyBlurEffectWithRadius:20.0 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
 }
 
 - (UIImage *)applyDarkBlurEffect
 {
-    UIColor *tintColor = [UIColor colorWithWhite:0.11f alpha:0.73f];
-    return [self applyBlurEffectWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
+    UIColor *tintColor = [UIColor colorWithWhite:0.11 alpha:0.73];
+    return [self applyBlurEffectWithRadius:20.0 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
 }
 
 - (UIImage *)applyTintBlurEffectWithTintColor:(UIColor *)tintColor
 {
-    const CGFloat EffectColorAlpha = 0.6f;
+    const CGFloat EffectColorAlpha = 0.6;
     UIColor *effectColor = tintColor;
     int componentCount = (int)CGColorGetNumberOfComponents(tintColor.CGColor);
     if (componentCount == 2) {
@@ -138,7 +138,7 @@
             effectColor = [UIColor colorWithRed:r green:g blue:b alpha:EffectColorAlpha];
         }
     }
-    return [self applyBlurEffectWithRadius:10.0f tintColor:effectColor saturationDeltaFactor:-1.0f maskImage:nil];
+    return [self applyBlurEffectWithRadius:10.0 tintColor:effectColor saturationDeltaFactor:-1.0 maskImage:nil];
 }
 
 - (UIImage *)applyBlurEffectWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage
@@ -165,7 +165,7 @@
     if (hasBlur || hasSaturationChange) {
         UIGraphicsBeginImageContextWithOptions(self.size, NO, [[UIScreen mainScreen] scale]);
         CGContextRef effectInContext = UIGraphicsGetCurrentContext();
-        CGContextScaleCTM(effectInContext, 1.0f, -1.0f);
+        CGContextScaleCTM(effectInContext, 1.0, -1.0);
         CGContextTranslateCTM(effectInContext, 0, -self.size.height);
         CGContextDrawImage(effectInContext, imageRect, self.CGImage);
         

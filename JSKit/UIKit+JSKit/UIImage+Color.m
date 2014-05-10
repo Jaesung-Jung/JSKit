@@ -35,7 +35,7 @@
 
 + (UIImage *)imageWithCGColor:(CGColorRef)cgColor
 {
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    CGRect rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
 
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -56,23 +56,23 @@
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
 
-    CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), self.CGImage);
+    CGContextDrawImage(context, CGRectMake(0.0, 0.0, 1.0, 1.0), self.CGImage);
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
 
     if (rgba[3] > 0) {
-        CGFloat alpha = ((CGFloat)rgba[3]) / 255.0f;
-        CGFloat multiplier = alpha / 255.0f;
+        CGFloat alpha = ((CGFloat)rgba[3]) / 255.0;
+        CGFloat multiplier = alpha / 255.0;
         return [UIColor colorWithRed:((CGFloat)rgba[0]) * multiplier
                                green:((CGFloat)rgba[1]) * multiplier
                                 blue:((CGFloat)rgba[2]) * multiplier
                                alpha:alpha];
     }
     else {
-        return [UIColor colorWithRed:((CGFloat)rgba[0]) / 255.0f
-                               green:((CGFloat)rgba[1]) / 255.0f
-                                blue:((CGFloat)rgba[2]) / 255.0f
-                               alpha:((CGFloat)rgba[3]) / 255.0f];
+        return [UIColor colorWithRed:((CGFloat)rgba[0]) / 255.0
+                               green:((CGFloat)rgba[1]) / 255.0
+                                blue:((CGFloat)rgba[2]) / 255.0
+                               alpha:((CGFloat)rgba[3]) / 255.0];
     }
 }
 
