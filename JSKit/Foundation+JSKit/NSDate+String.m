@@ -28,25 +28,30 @@
 
 @implementation NSDate (String)
 
-- (NSString *)stringValue {
+- (NSString *)stringValue
+{
     return [self stringValueWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterFullStyle];
 }
 
-- (NSString *)stringValueWithFormat:(NSString *)format {
+- (NSString *)stringValueWithFormat:(NSString *)format
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:format];
     return [dateFormatter stringFromDate:self];
 }
 
-- (NSString *)stringValueWithLocale:(NSLocale *)locale {
+- (NSString *)stringValueWithLocale:(NSLocale *)locale
+{
     return [self stringValueWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterFullStyle locale:locale];
 }
 
-- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle {
+- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle
+{
     return [self stringValueWithDateStyle:dateStyle timeStyle:timeStyle locale:[NSLocale currentLocale]];
 }
 
-- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle locale:(NSLocale *)locale {
+- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle locale:(NSLocale *)locale
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:dateStyle];
     [dateFormatter setTimeStyle:timeStyle];

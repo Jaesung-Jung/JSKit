@@ -26,7 +26,7 @@
 /*!
  * JSAnimationStep is manages the animations information.
  */
-@interface JSAnimationStep : NSObject
+NS_CLASS_AVAILABLE_IOS(4_0) @interface JSAnimationStep : NSObject
 
 @property (nonatomic)       NSTimeInterval         duration;
 @property (nonatomic)       NSTimeInterval         delay;

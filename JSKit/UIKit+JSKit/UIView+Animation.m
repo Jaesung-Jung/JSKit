@@ -36,13 +36,15 @@
 
 @implementation UIAnimatior
 
-+ (instancetype)animatorWithSteps:(NSArray *)steps {
++ (instancetype)animatorWithSteps:(NSArray *)steps
+{
     UIAnimatior *instance = [[UIAnimatior alloc] init];
     instance.steps = [NSMutableArray arrayWithArray:steps];
     return instance;
 }
 
-- (void)run {
+- (void)run
+{
     if (![self.steps count]) {
         self.steps = nil;
         return;
@@ -63,7 +65,8 @@
 #pragma mark - Implementation
 @implementation UIView (Animation)
 
-+ (void)animateWithAnimationSteps:(NSArray *)steps {
++ (void)animateWithAnimationSteps:(NSArray *)steps
+{
     [[UIAnimatior animatorWithSteps:steps] run];
 }
 

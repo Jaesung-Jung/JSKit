@@ -30,111 +30,111 @@
  *
  * @return A color object whose RGB values are 1.0, 0.231, and 0.188 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_red;
++ (UIColor *)ios7_red NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.227, and 0.176 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.227, and 0.176 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_deepRed;
++ (UIColor *)ios7_deepRed NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.584, and 0.0 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.584, and 0.0 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_orange;
++ (UIColor *)ios7_orange NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.8, and 0.0 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.8, and 0.0 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_yellow;
++ (UIColor *)ios7_yellow NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.298, 0.851, and 0.392 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.298, 0.851, and 0.392 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_green;
++ (UIColor *)ios7_green NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.878, 0.973, and 0.847 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.878, 0.973, and 0.847 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_lightGreen;
++ (UIColor *)ios7_lightGreen NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.0, 0.478, and 1.0 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.0, 0.478, and 1.0 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_blue;
++ (UIColor *)ios7_blue NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.204, 0.667, and 0.863 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.204, 0.667, and 0.863 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_lightBlue;
++ (UIColor *)ios7_lightBlue NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.345, 0.337, and 0.839 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.345, 0.337, and 0.839 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_violet;
++ (UIColor *)ios7_violet NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.286, and 0.0.506 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.286, and 0.0.506 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_pink;
++ (UIColor *)ios7_pink NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.827, and 0.878 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.827, and 0.878 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_lightPink;
++ (UIColor *)ios7_lightPink NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 1.0, 0.176, and 0.333 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 1.0, 0.176, and 0.333 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_hotPink;
++ (UIColor *)ios7_hotPink NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.557, 0.557, and 0.576 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.557, 0.557, and 0.576 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_gray;
++ (UIColor *)ios7_gray NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.741, 0.745, and 0.761 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.741, 0.745, and 0.761 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_lightGray;
++ (UIColor *)ios7_lightGray NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose grayscale value is 0.969 and whose alpha value is 1.0.
  *
  * @return A color object whose grayscale value is 0.969 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_white;
++ (UIColor *)ios7_white NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a color object whose RGB values are 0.122, 0.122, and 0.129 and whose alpha value is 1.0.
  *
  * @return A color object whose RGB values are 0.122, 0.122, and 0.129 and whose alpha value is 1.0.
  */
-+ (UIColor *)ios7_black;
++ (UIColor *)ios7_black NS_AVAILABLE_IOS(2_0);
 
 @end

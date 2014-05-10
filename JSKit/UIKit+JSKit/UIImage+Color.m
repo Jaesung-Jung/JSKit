@@ -28,11 +28,13 @@
 
 @implementation UIImage (Color)
 
-+ (UIImage *)imageWithColor:(UIColor *)color {
++ (UIImage *)imageWithColor:(UIColor *)color
+{
     return [UIImage imageWithCGColor:color.CGColor];
 }
 
-+ (UIImage *)imageWithCGColor:(CGColorRef)cgColor {
++ (UIImage *)imageWithCGColor:(CGColorRef)cgColor
+{
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
 
     UIGraphicsBeginImageContext(rect.size);
@@ -47,7 +49,8 @@
     return image;
 }
 
-- (UIColor *)averageColor {
+- (UIColor *)averageColor
+{
     unsigned char rgba[4];
 
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();

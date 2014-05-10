@@ -1,5 +1,5 @@
 //
-//  JSAppDelegate.m
+//  ALAssetsGroup+Properties.m
 //
 //  Copyright (c) 2014 Jaesung Jung
 //
@@ -21,13 +21,28 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "JSAppDelegate.h"
+#import "ALAssetsGroup+Properties.h"
 
-@implementation JSAppDelegate
+@implementation ALAssetsGroup (Properties)
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (NSString *)groupName
 {
-    return YES;
+    return [self valueForProperty:ALAssetsGroupPropertyName];
+}
+
+- (NSNumber *)groupType
+{
+    return [self valueForProperty:ALAssetsGroupPropertyType];
+}
+
+- (NSString *)groupUUID
+{
+    return [self valueForProperty:ALAssetsGroupPropertyPersistentID];
+}
+
+- (NSURL *)groupURL
+{
+    return [self valueForProperty:ALAssetsGroupPropertyURL];
 }
 
 @end

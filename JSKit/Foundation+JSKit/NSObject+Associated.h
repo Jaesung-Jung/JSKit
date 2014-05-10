@@ -30,12 +30,12 @@
  * @params value The value to associate with the key key for object. Pass nil to clear an existing association.
  * @params key The key for the association.
  */
-- (void)associateValue:(id)value withKey:(const void *)key;
+- (void)associateValue:(id)value withKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Sets an associated value (retain, atomic) for a given object using a given key.
  */
-- (void)atomicallyAssociateValue:(id)value withKey:(const void *)key;
+- (void)atomicallyAssociateValue:(id)value withKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Sets an associated value (copy, nonatomic) for a given object using a given key.
@@ -43,7 +43,7 @@
  * @params value The value to associate with the key key for object. Pass nil to clear an existing association.
  * @params key The key for the association.
  */
-- (void)associateCopyOfValue:(id)value withKey:(const void *)key;
+- (void)associateCopyOfValue:(id)value withKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Sets an associated value (copy, atomic) for a given object using a given key.
@@ -51,7 +51,7 @@
  * @params value The value to associate with the key key for object. Pass nil to clear an existing association.
  * @params key The key for the association.
  */
-- (void)atomicallyAssociateCopyOfValue:(id)value withKey:(const void *)key;
+- (void)atomicallyAssociateCopyOfValue:(id)value withKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Sets an associated value (assign) for a given object using a given key.
@@ -59,7 +59,7 @@
  * @params value The value to associate with the key key for object. Pass nil to clear an existing association.
  * @params key The key for the association.
  */
-- (void)weaklyAssociateValue:(id)value withKey:(const void *)key;
+- (void)weaklyAssociateValue:(id)value withKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Returns the value associated with a given object for a given key.
@@ -68,11 +68,11 @@
  *
  * @return A value associated with a given object for a given key.
  */
-- (id)associatedValueForKey:(const void *)key;
+- (id)associatedValueForKey:(const void *)key NS_AVAILABLE_IOS(3_1);
 
 /*!
  * Removes all associations for a given object.
  */
-- (void)removeAllAssociatedObjects;
+- (void)removeAllAssociatedObjects NS_AVAILABLE_IOS(3_1);
 
 @end

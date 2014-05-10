@@ -1,5 +1,5 @@
 //
-//  JSAppDelegate.m
+//  NSLayoutConstraint+Creation.m
 //
 //  Copyright (c) 2014 Jaesung Jung
 //
@@ -21,13 +21,18 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "JSAppDelegate.h"
+#import "NSLayoutConstraint+Creation.h"
 
-@implementation JSAppDelegate
+@implementation NSLayoutConstraint (Creation)
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
++ (NSArray *)constraintsWithVisualFormat:(NSString *)format views:(NSDictionary *)views
 {
-    return YES;
+    return [NSLayoutConstraint constraintsWithVisualFormat:format options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:views];
+}
+
++ (NSArray *)constraintsWithVisualFormat:(NSString *)format options:(NSLayoutFormatOptions)opts views:(NSDictionary *)views
+{
+    return [NSLayoutConstraint constraintsWithVisualFormat:format options:opts metrics:nil views:views];
 }
 
 @end

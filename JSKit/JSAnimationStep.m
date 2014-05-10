@@ -25,31 +25,38 @@
 
 @implementation JSAnimationStep
 
-+ (instancetype)animationStep {
++ (instancetype)animationStep
+{
     return [[JSAnimationStep alloc] init];
 }
 
-+ (instancetype)animationStepWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
++ (instancetype)animationStepWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     return [[JSAnimationStep alloc] initWithDuration:duration animations:animations completion:completion];
 }
 
-+ (instancetype)animationStepWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
++ (instancetype)animationStepWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     return [[JSAnimationStep alloc] initWithDuration:duration delay:delay animations:animations completion:completion];
 }
 
-+ (instancetype)animationStepWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
++ (instancetype)animationStepWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     return [[JSAnimationStep alloc] initWithDuration:duration delay:delay options:options animations:animations completion:completion];
 }
 
-- (id)initWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
+- (id)initWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     return [self initWithDuration:duration delay:0.0 animations:animations completion:completion];
 }
 
-- (id)initWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
+- (id)initWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     return [self initWithDuration:duration delay:delay options:0 animations:animations completion:completion];
 }
 
-- (id)initWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion {
+- (id)initWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
+{
     if (self = [super init]) {
         self.duration = duration;
         self.delay = delay;

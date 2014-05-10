@@ -27,7 +27,8 @@
 
 @implementation JSCircularImageView
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     // Create circular mask.

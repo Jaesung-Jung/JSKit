@@ -26,6 +26,6 @@
 /*!
  * JSCircularImageView is UIImageView extension class. It's behavior is same. but, view is circular.
  */
-@interface JSCircularImageView : UIImageView
+NS_CLASS_AVAILABLE_IOS(5_0) @interface JSCircularImageView : UIImageView
 
 @end

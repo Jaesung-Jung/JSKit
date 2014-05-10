@@ -35,7 +35,8 @@
 
 @implementation JSTestItem
 
-+ (instancetype)itemWithTestName:(NSString *)testName segueIdentifier:(NSString *)segueIdentifier {
++ (instancetype)itemWithTestName:(NSString *)testName segueIdentifier:(NSString *)segueIdentifier
+{
     JSTestItem *testItem = [[JSTestItem alloc] init];
     testItem.testName = testName;
     testItem.segueIdentifier = segueIdentifier;
@@ -54,7 +55,8 @@
 
 @implementation JSViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.testItemTable = @{@"Animation" : @[[JSTestItem itemWithTestName:@"Animation Step"      segueIdentifier:@"AnimationStepSegue"]],
@@ -66,7 +68,8 @@
 }
 
 #pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString *sectionKey = self.testItemSections[indexPath.section];
     NSString *segueIdentifier = ((JSTestItem *)self.testItemTable[sectionKey][indexPath.row]).segueIdentifier;
 
@@ -74,20 +77,25 @@
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    UICollectionView
     return [self.testItemSections count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     return self.testItemSections[section];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     NSString *sectionKey = self.testItemSections[section];
     return [self.testItemTable[sectionKey] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString *sectionKey = self.testItemSections[indexPath.section];
     JSTestItem *testItem = self.testItemTable[sectionKey][indexPath.row];
     

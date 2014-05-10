@@ -103,22 +103,26 @@
 
 @implementation UIImage (BlurEffects)
 
-- (UIImage *)applyLightBlurEffect {
+- (UIImage *)applyLightBlurEffect
+{
     UIColor *tintColor = [UIColor colorWithWhite:1.0f alpha:0.3f];
     return [self applyBlurEffectWithRadius:30.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
-- (UIImage *)applyExtraLightBlurEffect {
+- (UIImage *)applyExtraLightBlurEffect
+{
     UIColor *tintColor = [UIColor colorWithWhite:0.97f alpha:0.82f];
     return [self applyBlurEffectWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
-- (UIImage *)applyDarkBlurEffect {
+- (UIImage *)applyDarkBlurEffect
+{
     UIColor *tintColor = [UIColor colorWithWhite:0.11f alpha:0.73f];
     return [self applyBlurEffectWithRadius:20.0f tintColor:tintColor saturationDeltaFactor:1.8f maskImage:nil];
 }
 
-- (UIImage *)applyTintBlurEffectWithTintColor:(UIColor *)tintColor {
+- (UIImage *)applyTintBlurEffectWithTintColor:(UIColor *)tintColor
+{
     const CGFloat EffectColorAlpha = 0.6f;
     UIColor *effectColor = tintColor;
     int componentCount = (int)CGColorGetNumberOfComponents(tintColor.CGColor);
@@ -137,7 +141,8 @@
     return [self applyBlurEffectWithRadius:10.0f tintColor:effectColor saturationDeltaFactor:-1.0f maskImage:nil];
 }
 
-- (UIImage *)applyBlurEffectWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage {
+- (UIImage *)applyBlurEffectWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage
+{
     // check pre-conditions
     if (self.size.width < 1 || self.size.height < 1) {
         NSLog (@"*** error: invalid size: (%.2f x %.2f). Both dimensions must be >= 1: %@", self.size.width, self.size.height, self);

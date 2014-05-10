@@ -21,11 +21,15 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+// AssetsLibrary+JSKit
+#import "ALAssetsGroup+Properties.h"
+
 // Foundation+JSKit
 #import "NSDate+String.h"
 #import "NSObject+Associated.h"
 
 // UIKit+JSkit
+#import "NSLayoutConstraint+Creation.h"
 #import "UIColor+Colors.h"
 #import "UIControl+Event.h"
 #import "UIImage+BlurEffects.h"
@@ -35,6 +39,10 @@
 
 // JSKit
 #import "JSAnimationStep.h"
+
+// Device interface idiom
+#define DEVICE_IS_PHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
+#define DEVICE_IS_PAD   UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
 #define XCODE_COLORS_PLUGIN     1
 #if XCODE_COLORS_PLUGIN

@@ -32,6 +32,6 @@
  *
  * @params steps The array of JSAnimationStep.
  */
-+ (void)animateWithAnimationSteps:(NSArray *)steps;
++ (void)animateWithAnimationSteps:(NSArray *)steps NS_AVAILABLE_IOS(4_0);
 
 @end

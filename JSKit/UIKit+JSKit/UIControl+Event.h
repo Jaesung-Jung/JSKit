@@ -25,25 +25,28 @@
 
 @interface UIControl (Event)
 
-/* Add a event block for control events using receiver's block and control events.
+/*!
+ * Add a event block for control events using receiver's block and control events.
  *
  * @params block The block to apply to event action.
  * @params controlEvents A bitmask specifying the control events for which the action message is sent.
  */
-- (void)addEventBlock:(void (^)(id sender))block forControlEvents:(UIControlEvents)controlEvents;
+- (void)addEventBlock:(void (^)(id sender))block forControlEvents:(UIControlEvents)controlEvents NS_AVAILABLE_IOS(4_0);
 
-/* Remove all event blocks for receiver's control events.
+/*!
+ * Remove all event blocks for receiver's control events.
  *
  * @params controlEvents A bitmask specifying the control events for which the action message is sent.
  */
-- (void)removeEventBlocksForControlEvents:(UIControlEvents)controlEvents;
+- (void)removeEventBlocksForControlEvents:(UIControlEvents)controlEvents NS_AVAILABLE_IOS(4_0);
 
-/* Returns a boolean value that indicates whether the event blocks is registered for receiver's control events.
+/*!
+ * Returns a boolean value that indicates whether the event blocks is registered for receiver's control events.
  *
  * @params controlEvents A bitmask specifying the control events for which the action message is sent.
  *
  * @return A boolean value that indicates whether the event blocks is registered for receiver's control events.
  */
-- (BOOL)hasEventBlocksForControlEvents:(UIControlEvents)controlEvents;
+- (BOOL)hasEventBlocksForControlEvents:(UIControlEvents)controlEvents NS_AVAILABLE_IOS(4_0);
 
 @end

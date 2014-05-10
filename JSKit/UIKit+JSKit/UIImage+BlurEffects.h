@@ -102,34 +102,34 @@
  *
  * @return An blur effect image using white color and alpha value is 0.3.
  */
-- (UIImage *)applyLightBlurEffect;
+- (UIImage *)applyLightBlurEffect NS_AVAILABLE_IOS(5_0);
 
 /*!
  * Returns an blur effect image using grayscale value is 0.97 and alpha value is 0.82.
  *
  * @return An blur effect image using grayscale value is 0.97 and alpha value is 0.82.
  */
-- (UIImage *)applyExtraLightBlurEffect;
+- (UIImage *)applyExtraLightBlurEffect NS_AVAILABLE_IOS(5_0);
 
 /*!
  * Returns an blur effect image using grayscale value is 0.11 and alpha value is 0.73.
  *
  * @return An blur effect image using grayscale value is 0.11 and alpha value is 0.73.
  */
-- (UIImage *)applyDarkBlurEffect;
+- (UIImage *)applyDarkBlurEffect NS_AVAILABLE_IOS(5_0);
 
 /*!
  * Returns an blur effect image using receiver's color.
  *
  * @return An blur effect image using receiver's color.
  */
-- (UIImage *)applyTintBlurEffectWithTintColor:(UIColor *)tintColor;
+- (UIImage *)applyTintBlurEffectWithTintColor:(UIColor *)tintColor NS_AVAILABLE_IOS(5_0);
 
 /*!
  * Returns an blur effect image using radius, tintColor, saturation delta factor and mask image.
  *
  * @return An blur effect image using radius, tintColor, saturation delta factor and mask image.
  */
-- (UIImage *)applyBlurEffectWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage;
+- (UIImage *)applyBlurEffectWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage NS_AVAILABLE_IOS(5_0);
 
 @end

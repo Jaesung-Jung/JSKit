@@ -26,21 +26,21 @@
 @interface UIView (Properties)
 
 #pragma mark - Frame
-@property (nonatomic) CGPoint frameOrigin;
-@property (nonatomic) CGFloat frameX;
-@property (nonatomic) CGFloat frameY;
+@property (nonatomic) CGPoint frameOrigin NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat frameX NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat frameY NS_AVAILABLE_IOS(2_0);
 
-@property (nonatomic) CGSize  frameSize;
-@property (nonatomic) CGFloat frameWidth;
-@property (nonatomic) CGFloat frameHeight;
+@property (nonatomic) CGSize  frameSize NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat frameWidth NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat frameHeight NS_AVAILABLE_IOS(2_0);
 
 #pragma mark Bounds
-@property (nonatomic) CGPoint boundsOrigin;
-@property (nonatomic) CGFloat boundsX;
-@property (nonatomic) CGFloat boundsY;
+@property (nonatomic) CGPoint boundsOrigin NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat boundsX NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat boundsY NS_AVAILABLE_IOS(2_0);
 
-@property (nonatomic) CGSize  boundsSize;
-@property (nonatomic) CGFloat boundsWidth;
-@property (nonatomic) CGFloat boundsHeight;
+@property (nonatomic) CGSize  boundsSize NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat boundsWidth NS_AVAILABLE_IOS(2_0);
+@property (nonatomic) CGFloat boundsHeight NS_AVAILABLE_IOS(2_0);
 
 @end

@@ -33,7 +33,7 @@
  *
  * @return A new image object for the specified color.
  */
-+ (UIImage *)imageWithColor:(UIColor *)color;
++ (UIImage *)imageWithColor:(UIColor *)color NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Creates and returns an image object representing the specified cg color.
@@ -42,13 +42,13 @@
  *
  * @return A new image object for the specified cg color.
  */
-+ (UIImage *)imageWithCGColor:(CGColorRef)cgColor;
++ (UIImage *)imageWithCGColor:(CGColorRef)cgColor NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a average color object of image palette.
  *
  * @return A average color object of image palette.
  */
-- (UIColor *)averageColor;
+- (UIColor *)averageColor NS_AVAILABLE_IOS(2_0);
 
 @end

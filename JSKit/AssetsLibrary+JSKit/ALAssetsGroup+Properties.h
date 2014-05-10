@@ -1,5 +1,5 @@
 //
-//  JSAppDelegate.m
+//  ALAssetsGroup+Properties.h
 //
 //  Copyright (c) 2014 Jaesung Jung
 //
@@ -21,13 +21,36 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "JSAppDelegate.h"
+@import AssetsLibrary.ALAssetsGroup;
 
-@implementation JSAppDelegate
+@interface ALAssetsGroup (Properties)
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    return YES;
-}
+/*!
+ * Returns a string representation of an assets group name.
+ *
+ * @return A string representation of an assets group name
+ */
+@property (nonatomic, readonly) NSString *groupName NS_AVAILABLE_IOS(4_0);
+
+/*!
+ * Returns a number representation of an assets group type.
+ *
+ * @return A number representation of an assets group type
+ */
+@property (nonatomic, readonly) NSNumber *groupType NS_AVAILABLE_IOS(4_0);
+
+/*!
+ * Returns a string representation of an assets group UUID.
+ *
+ * @return A string representation of an assets group UUID
+ */
+@property (nonatomic, readonly) NSString *groupUUID NS_AVAILABLE_IOS(4_0);
+
+/*!
+ * Returns a url representation of an assets group url.
+ *
+ * @return A url representation of an assets group url
+ */
+@property (nonatomic, readonly) NSURL *groupURL NS_AVAILABLE_IOS(4_0);
 
 @end

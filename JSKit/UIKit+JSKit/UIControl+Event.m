@@ -38,7 +38,8 @@ static void *kControlBlocks;
 
 @implementation JSEventHandler
 
-- (instancetype)initWithBlock:(void (^)(id sender))block forControlEvents:(UIControlEvents)controlEvents {
+- (instancetype)initWithBlock:(void (^)(id sender))block forControlEvents:(UIControlEvents)controlEvents
+{
     if ((self = [super init])) {
         self.actionBlock = block;
         self.controlEvents = controlEvents;
@@ -46,11 +47,13 @@ static void *kControlBlocks;
     return self;
 }
 
-- (instancetype)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone
+{
     return [[JSEventHandler alloc] initWithBlock:self.actionBlock forControlEvents:self.controlEvents];
 }
 
-- (void)invoke:(id)sender {
+- (void)invoke:(id)sender
+{
     self.actionBlock(sender);
 }
 
@@ -59,7 +62,8 @@ static void *kControlBlocks;
 #pragma mark - Implementation
 @implementation UIControl (Event)
 
-- (void)addEventBlock:(void (^)(id))block forControlEvents:(UIControlEvents)controlEvents {
+- (void)addEventBlock:(void (^)(id))block forControlEvents:(UIControlEvents)controlEvents
+{
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
     if (!events) {
         events = [NSMutableDictionary dictionary];
@@ -78,7 +82,8 @@ static void *kControlBlocks;
     [self addTarget:target action:@selector(invoke:) forControlEvents:controlEvents];
 }
 
-- (void)removeEventBlocksForControlEvents:(UIControlEvents)controlEvents {
+- (void)removeEventBlocksForControlEvents:(UIControlEvents)controlEvents
+{
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
     if (!events) {
         events = [NSMutableDictionary dictionary];
@@ -98,7 +103,8 @@ static void *kControlBlocks;
     [events removeObjectForKey:key];
 }
 
-- (BOOL)hasEventBlocksForControlEvents:(UIControlEvents)controlEvents {
+- (BOOL)hasEventBlocksForControlEvents:(UIControlEvents)controlEvents
+{
     NSMutableDictionary *events = [self associatedValueForKey:&kControlBlocks];
     if (!events) {
         events = [NSMutableDictionary dictionary];
@@ -111,7 +117,7 @@ static void *kControlBlocks;
     if (!handlers)
         return NO;
     
-    return handlers.count;
+    return [handlers count];
 }
 
 @end

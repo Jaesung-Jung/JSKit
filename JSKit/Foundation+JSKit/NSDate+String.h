@@ -31,7 +31,7 @@
  *
  * @return A string representation of a given date formatted using the default format.
  */
-- (NSString *)stringValue;
+- (NSString *)stringValue NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a string representation of a given date formatted using the receiver's format.
@@ -41,7 +41,7 @@
  *
  * @return A string representation of a given date formatted using the receiver's format.
  */
-- (NSString *)stringValueWithFormat:(NSString *)format;
+- (NSString *)stringValueWithFormat:(NSString *)format NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a string representation of a given date formatted using the receiver's locale.
@@ -50,7 +50,7 @@
  *
  * @return A string representation of a given date formatted using the receiver's locale.
  */
-- (NSString *)stringValueWithLocale:(NSLocale *)locale;
+- (NSString *)stringValueWithLocale:(NSLocale *)locale NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a string representation of a given date formatted using the receiver's style and time style.
@@ -60,7 +60,7 @@
  *
  * @return A string representation of a given date formatted using the receiver's style and time style.
  */
-- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle;
+- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle NS_AVAILABLE_IOS(2_0);
 
 /*!
  * Returns a string representation of a given date formatted using the receiver's style, time style and locale.
@@ -71,6 +71,6 @@
  *
  * @return A string representation of a given date formatted using the receiver's style, time style and locale.
  */
-- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle locale:(NSLocale *)locale;
+- (NSString *)stringValueWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle locale:(NSLocale *)locale NS_AVAILABLE_IOS(2_0);
 
 @end

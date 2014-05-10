@@ -26,102 +26,126 @@
 @implementation UIView (Properties)
 
 #pragma mark - Frame Getter
-- (CGPoint)frameOrigin {
+- (CGPoint)frameOrigin
+{
     return self.frame.origin;
 }
 
-- (CGFloat)frameX {
+- (CGFloat)frameX
+{
     return CGRectGetMinX(self.frame);
 }
 
-- (CGFloat)frameY {
+- (CGFloat)frameY
+{
     return CGRectGetMinY(self.frame);
 }
 
-- (CGSize)frameSize {
+- (CGSize)frameSize
+{
     return self.frame.size;
 }
 
-- (CGFloat)frameWidth {
+- (CGFloat)frameWidth
+{
     return CGRectGetWidth(self.frame);
 }
 
-- (CGFloat)frameHeight {
+- (CGFloat)frameHeight
+{
     return CGRectGetHeight(self.frame);
 }
 
 #pragma mark - Frame Setter
-- (void)setFrameOrigin:(CGPoint)origin {
+- (void)setFrameOrigin:(CGPoint)origin
+{
     self.frame = CGRectMake(origin.x, origin.y, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
 }
 
-- (void)setFrameX:(CGFloat)x {
+- (void)setFrameX:(CGFloat)x
+{
     self.frame = CGRectMake(x, CGRectGetMinY(self.frame), CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
 }
 
-- (void)setFrameY:(CGFloat)y {
+- (void)setFrameY:(CGFloat)y
+{
     self.frame = CGRectMake(CGRectGetMinX(self.frame), y, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
 }
 
-- (void)setFrameSize:(CGSize)size {
+- (void)setFrameSize:(CGSize)size
+{
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), size.width, size.height);
 }
 
-- (void)setFrameWidth:(CGFloat)width {
+- (void)setFrameWidth:(CGFloat)width
+{
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), width, CGRectGetHeight(self.frame));
 }
 
-- (void)setFrameHeight:(CGFloat)height {
+- (void)setFrameHeight:(CGFloat)height
+{
     self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), CGRectGetWidth(self.frame), height);
 }
 
 #pragma mark - Bounds Getter
-- (CGPoint)boundsOrigin {
+- (CGPoint)boundsOrigin
+{
     return self.bounds.origin;
 }
 
-- (CGFloat)boundsX {
+- (CGFloat)boundsX
+{
     return CGRectGetMinX(self.bounds);
 }
 
-- (CGFloat)boundsY {
+- (CGFloat)boundsY
+{
     return CGRectGetMinY(self.bounds);
 }
 
-- (CGSize)boundsSize {
+- (CGSize)boundsSize
+{
     return self.bounds.size;
 }
 
-- (CGFloat)boundsWidth {
+- (CGFloat)boundsWidth
+{
     return CGRectGetWidth(self.bounds);
 }
 
-- (CGFloat)boundsHeight {
+- (CGFloat)boundsHeight
+{
     return CGRectGetHeight(self.bounds);
 }
 
 #pragma mark - Bounds Setter
-- (void)setBoundsOrigin:(CGPoint)origin {
+- (void)setBoundsOrigin:(CGPoint)origin
+{
     self.bounds = CGRectMake(origin.x, origin.y, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 }
 
-- (void)setBoundsX:(CGFloat)x {
+- (void)setBoundsX:(CGFloat)x
+{
     self.bounds = CGRectMake(x, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 }
 
-- (void)setBoundsY:(CGFloat)y {
+- (void)setBoundsY:(CGFloat)y
+{
     self.bounds = CGRectMake(CGRectGetMinX(self.bounds), y, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 }
 
-- (void)setBoundsSize:(CGSize)size {
+- (void)setBoundsSize:(CGSize)size
+{
     self.bounds = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), size.width, size.height);
 }
 
-- (void)setBoundsWidth:(CGFloat)width {
+- (void)setBoundsWidth:(CGFloat)width
+{
     self.bounds = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), width, CGRectGetHeight(self.bounds));
 }
 
-- (void)setBoundsHeight:(CGFloat)height {
+- (void)setBoundsHeight:(CGFloat)height
+{
     self.bounds = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), height);
 }
 
