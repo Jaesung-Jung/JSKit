@@ -79,7 +79,6 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    UICollectionView
     return [self.testItemSections count];
 }
 
@@ -98,7 +97,7 @@
 {
     NSString *sectionKey = self.testItemSections[indexPath.section];
     JSTestItem *testItem = self.testItemTable[sectionKey][indexPath.row];
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DemoCell" forIndexPath:indexPath];
     [cell.textLabel setText:testItem.testName];
     return cell;
