@@ -36,6 +36,7 @@
 #import "UIImage+Color.h"
 #import "UIView+Animation.h"
 #import "UIView+Properties.h"
+#import "UIView+Snapshot.h"
 
 // JSKit
 #import "JSAnimationStep.h"
