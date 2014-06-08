@@ -8,27 +8,51 @@
 
 @import Foundation.NSObject;
 
+#if defined(__LP64__) && __LP64__
+# define PROGRESS_TYPE double
+# define PROGRESS_IS_DOUBLE 1
+#else
+# define PROGRESS_TYPE float
+# define PROGRESS_IS_DOUBLE 0
+#endif
+
+typedef PROGRESS_TYPE JSFloat;
+
 typedef NS_ENUM(NSInteger, JSZipArchiveError) {
     JSZipArchiveErrorFileOpen = 1,
+    JSZipArchiveErrorFileIsNotOpened,
     JSZipArchiveErrorBadZipFile,
     JSZipArchiveErrorBadParameter,
+    JSZipArchiveErrorBadPassword,
     JSZipArchiveErrorInternalError,
     JSZipArchiveErrorCRC,
     JSZipArchiveErrorUnknown,
 };
 
-@class JSZipContent;
+@class JSZipArchive;
+@class JSUnzippedData;
+
+@protocol JSZipArchiveDelegate <NSObject>
+
+@optional
+- (void)zipArchive:(JSZipArchive *)zipArchive willBeginUnzipOnZipFileName:(NSString *)fileName;
+- (void)zipArchive:(JSZipArchive *)zipArchive didEndUnzipOnZipFileName:(NSString *)fileName;
+- (void)zipArchive:(JSZipArchive *)zipArchive updateProgress:(JSFloat)progress onUnzipFileName:(NSString *)unzipFileName;
+
+@end
 
 NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 
-@property (nonatomic, strong) NSString *zipFilePath;
-@property (nonatomic, strong) NSString *zipFileName;
-@property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *comment;
+@property (nonatomic, readonly) NSString *zipFilePath;
+@property (nonatomic, readonly) NSString *zipFileName;
+@property (nonatomic, readonly) NSString *comment;
+@property (nonatomic, strong)   NSString *password;
 
-@property (nonatomic, readonly) NSArray *contents;
+@property (nonatomic, readonly) BOOL encrypted;
 
 @property (nonatomic, readonly) BOOL isOpened;
+
+@property (nonatomic, weak) id<JSZipArchiveDelegate> delegate;
 
 /*!
  * Open an existing zip file ready for unzip.
@@ -86,30 +110,27 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 /*!
  * Unzip all files in the zip archive into the memory.
  *
- * @return JSZipContent array that contains unzip data.
+ * @return JSUnzipData array that contains unzip data.
  */
-- (NSArray *)arrayByUnzip;
+- (NSArray *)unzipToArray;
 
 /*!
- * Unzip given indexes file in the zip archive into the memory.
+ * Unzip first file in the zip archive into the memory.
  *
  * @params indexSet index set for zip content.
  *
- * @return JSZipContent array that contains unzip data.
+ * @return A JSUnzipData.
  */
-- (NSArray *)arrayByUnzipAtIndexSet:(NSIndexSet *)indexSet;
+- (JSUnzippedData *)unzipFirstFile;
 
 @end
 
-@interface JSZipContent : NSObject
+NS_CLASS_AVAILABLE_IOS(2_0) @interface JSUnzippedData : NSObject
 
-@property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSUInteger compressedSize;
-@property (nonatomic, readonly) NSUInteger uncompressedSize;
-@property (nonatomic, readonly) NSTimeInterval date;
-@property (nonatomic, readonly) NSUInteger crc;
-@property (nonatomic, readonly) BOOL isDirectory;
-
-@property (nonatomic, readonly) NSData *unzipData;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSData *unzippedData; // If isDirectory property is true, unzippedData is nil.
+@property (nonatomic, strong) NSDate *modificationDate;
+@property (nonatomic, strong) NSArray *childFiles;
+@property (nonatomic, assign) BOOL isDirectory;
 
 @end
