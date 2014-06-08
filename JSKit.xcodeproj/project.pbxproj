@@ -28,6 +28,7 @@
 		4B91603A18B8E9980068D4A9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B91601C18B8E9980068D4A9 /* UIKit.framework */; };
 		4B91604218B8E9980068D4A9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B91604018B8E9980068D4A9 /* InfoPlist.strings */; };
 		4B91604418B8E9980068D4A9 /* JSKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B91604318B8E9980068D4A9 /* JSKitTests.m */; };
+		4B95E6BE1944D42B00229797 /* NSString+CharacterCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B95E6BD1944D42B00229797 /* NSString+CharacterCount.m */; };
 		4BAF996E191EB5880003F2A3 /* ALAssetsGroup+Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAF996D191EB5880003F2A3 /* ALAssetsGroup+Properties.m */; };
 		4BAF9971191EB5A40003F2A3 /* NSLayoutConstraint+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAF9970191EB5A40003F2A3 /* NSLayoutConstraint+Creation.m */; };
 		4BAF9977191EBB740003F2A3 /* UIView+Snapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAF9976191EBB740003F2A3 /* UIView+Snapshot.m */; };
@@ -101,6 +102,8 @@
 		4B91603F18B8E9980068D4A9 /* JSKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JSKitTests-Info.plist"; sourceTree = "<group>"; };
 		4B91604118B8E9980068D4A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B91604318B8E9980068D4A9 /* JSKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSKitTests.m; sourceTree = "<group>"; };
+		4B95E6BC1944D42B00229797 /* NSString+CharacterCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CharacterCount.h"; sourceTree = "<group>"; };
+		4B95E6BD1944D42B00229797 /* NSString+CharacterCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CharacterCount.m"; sourceTree = "<group>"; };
 		4BAF996C191EB5880003F2A3 /* ALAssetsGroup+Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsGroup+Properties.h"; sourceTree = "<group>"; };
 		4BAF996D191EB5880003F2A3 /* ALAssetsGroup+Properties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsGroup+Properties.m"; sourceTree = "<group>"; };
 		4BAF996F191EB5A40003F2A3 /* NSLayoutConstraint+Creation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Creation.h"; sourceTree = "<group>"; };
@@ -289,6 +292,8 @@
 				4BB96F4818B8EE39009AEB91 /* NSDate+String.m */,
 				4BB96F4718B8EE39009AEB91 /* NSObject+Associated.h */,
 				4BB96F4918B8EE39009AEB91 /* NSObject+Associated.m */,
+				4B95E6BC1944D42B00229797 /* NSString+CharacterCount.h */,
+				4B95E6BD1944D42B00229797 /* NSString+CharacterCount.m */,
 			);
 			path = "Foundation+JSKit";
 			sourceTree = "<group>";
@@ -451,6 +456,7 @@
 				4BB96F5918B8EE97009AEB91 /* UIView+Animation.m in Sources */,
 				4B43815C18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m in Sources */,
 				4BC79C16193F879F00C0CBC0 /* unzip.c in Sources */,
+				4B95E6BE1944D42B00229797 /* NSString+CharacterCount.m in Sources */,
 				4B91602518B8E9980068D4A9 /* main.m in Sources */,
 				4B91602F18B8E9980068D4A9 /* JSViewController.m in Sources */,
 				4B43814E18B9CC5D0051FC0D /* JSCircularImageView.m in Sources */,

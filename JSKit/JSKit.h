@@ -27,6 +27,7 @@
 // Foundation+JSKit
 #import "NSDate+String.h"
 #import "NSObject+Associated.h"
+#import "NSString+CharacterCount.h"
 
 // UIKit+JSkit
 #import "NSLayoutConstraint+Creation.h"
