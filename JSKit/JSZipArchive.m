@@ -422,7 +422,7 @@ static NSArray *SupportEncodings;
                 }
             } while (readByte > 0);
 
-            unzipData.unzippedData = data;
+            unzipData.data = data;
         }
         unzCloseCurrentFile(self.unzFile);
 
@@ -527,7 +527,7 @@ static NSArray *SupportEncodings;
                     [data appendBytes:block length:readByte];
                 } while (readByte > 0);
 
-                unzippedData.unzippedData = data;
+                unzippedData.data = data;
             }
             unzCloseCurrentFile(self.unzFile);
         }
@@ -583,7 +583,7 @@ static NSArray *SupportEncodings;
             unzippedData = [JSUnzippedData new];
             unzippedData.name = contentName;
             unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
-            unzippedData.unzippedData = data;
+            unzippedData.data = data;
         }
         unzCloseCurrentFile(self.unzFile);
         self.endOfList = unzGoToNextFile(self.unzFile) == UNZ_END_OF_LIST_OF_FILE;

@@ -155,7 +155,7 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 NS_CLASS_AVAILABLE_IOS(2_0) @interface JSUnzippedData : NSObject
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSData *unzippedData; // If isDirectory property is true, unzippedData is nil.
+@property (nonatomic, strong) NSData *data; // If isDirectory property is true, unzippedData is nil.
 @property (nonatomic, strong) NSDate *modificationDate;
 @property (nonatomic, strong) NSArray *childFiles;
 @property (nonatomic, assign) BOOL isDirectory;
