@@ -26,7 +26,22 @@
 
 @interface NSString (CharacterCount)
 
+/*!
+ * Returns a count of given character.
+ *
+ * @params character The character for count of the receiver.
+ *
+ * @return A count of given character.
+ */
 - (NSUInteger)occurrencesOfCharacter:(unichar)character;
+
+/*!
+ * Returns a count of given character set.
+ *
+ * @params chracterSet The chracter set for count of the receiver.
+ *
+ * @return A count of given chracter.
+ */
 - (NSUInteger)occurrencesOfCharactersInCharacterSet:(NSCharacterSet *)characterSet;
 
 @end
