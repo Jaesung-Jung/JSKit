@@ -41,6 +41,7 @@
 
 // JSKit
 #import "JSAnimationStep.h"
+#import "JSZipArchive.h"
 
 // Device interface idiom
 #define DEVICE_IS_PHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
