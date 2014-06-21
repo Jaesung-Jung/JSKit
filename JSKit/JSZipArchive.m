@@ -63,6 +63,10 @@ static NSArray *SupportEncodings;
 @interface JSZipArchive ()
 
 @property (nonatomic, assign) unsigned long totalSizeOfFiles;
+@property (nonatomic, assign) unzFile unzFile;
+@property (nonatomic, strong) NSNumber *encoding;
+
+@property (nonatomic, assign) BOOL endOfList;
 
 @end
 
@@ -155,6 +159,11 @@ static NSArray *SupportEncodings;
                          ];
 }
 
+- (void)dealloc
+{
+    [self close];
+}
+
 - (void)openWithPath:(NSString *)path password:(NSString *)password error:(NSError *__autoreleasing *)error
 {
     self.password = password;
@@ -163,20 +172,20 @@ static NSArray *SupportEncodings;
 
 - (void)openWithPath:(NSString *)path error:(NSError *__autoreleasing *)error
 {
-    [self reset];
+    [self close];
 
     NSInteger resultCode;
-    unzFile unzFile = unzOpen((const char *)[path UTF8String]);
-    if (unzFile == NULL) {
+    self.unzFile = unzOpen((const char *)[path UTF8String]);
+    if (self.unzFile == NULL) {
         [JSZipArchive setError:error code:JSZipArchiveErrorFileOpen path:path];
         return;
     }
 
     unz_global_info globalInfo;
-    resultCode = unzGetGlobalInfo(unzFile, &globalInfo);
+    resultCode = unzGetGlobalInfo(self.unzFile, &globalInfo);
     if (resultCode == UNZ_OK) {
         char *commentBuffer = (char *)malloc(globalInfo.size_comment + 1);
-        unzGetGlobalComment(unzFile, commentBuffer, globalInfo.size_comment);
+        unzGetGlobalComment(self.unzFile, commentBuffer, globalInfo.size_comment);
         _comment = [NSString stringWithCString:commentBuffer encoding:NSASCIIStringEncoding];
         free(commentBuffer);
     }
@@ -184,29 +193,45 @@ static NSArray *SupportEncodings;
     // Check encrypted and calculate total size of files
     BOOL checkedEncrypt = NO;
     char checkBlock[1] = { 0x00 };
-    unzGoToFirstFile(unzFile);
+    unzGoToFirstFile(self.unzFile);
     do {
-        unzOpenCurrentFile(unzFile);
+        unzOpenCurrentFile(self.unzFile);
 
         // Check encrypted
-        if (!checkedEncrypt && unzReadCurrentFile(unzFile, checkBlock, sizeof(checkBlock)) < 0) {
+        if (!checkedEncrypt && unzReadCurrentFile(self.unzFile, checkBlock, sizeof(checkBlock)) < 0) {
             _encrypted = YES;
         }
         checkedEncrypt = YES;
 
         // Calculate total size of files
         unz_file_info fileInfo;
-        unzGetCurrentFileInfo(unzFile, &fileInfo, NULL, 0, NULL, 0, NULL, 0);
+        unzGetCurrentFileInfo(self.unzFile, &fileInfo, NULL, 0, NULL, 0, NULL, 0);
         self.totalSizeOfFiles += fileInfo.uncompressed_size;
-    } while (unzGoToNextFile(unzFile) != UNZ_END_OF_LIST_OF_FILE);
+    } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE);
 
     NSUInteger startLocation = [path rangeOfString:@"/" options:NSBackwardsSearch].location + 1;
     NSUInteger endLocation = [path rangeOfString:@"." options:NSBackwardsSearch].location;
     _zipFileName = [path substringWithRange:NSMakeRange(startLocation, endLocation - startLocation)];
     _zipFilePath = path;
-    _isOpened = YES;
 
-    unzClose(unzFile);
+    unzGoToFirstFile(self.unzFile);
+}
+
+- (void)close
+{
+    if (_unzFile) {
+        NSLog(@"unzip close");
+        unzClose(_unzFile);
+        _unzFile = nil;
+        _encoding = nil;
+        _zipFilePath = nil;
+        _zipFileName = nil;
+        _password = nil;
+        _comment = nil;
+        _encrypted = NO;
+        _totalSizeOfFiles = 0;
+        _endOfList = NO;
+    }
 }
 
 - (void)unzipToPath:(NSString *)path error:(NSError *__autoreleasing *)error
@@ -226,7 +251,7 @@ static NSArray *SupportEncodings;
 
 - (void)unzipToPath:(NSString *)path createFolder:(BOOL)createFolder overwrite:(BOOL)overwrite error:(NSError *__autoreleasing *)error
 {
-    if (!_isOpened) {
+    if (!self.isOpened) {
         [JSZipArchive setError:error code:JSZipArchiveErrorFileIsNotOpened path:nil];
         return;
     }
@@ -236,7 +261,6 @@ static NSArray *SupportEncodings;
     }
 
     NSInteger resultCode;
-    unzFile unzFile = unzOpen([self.zipFilePath UTF8String]);
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (createFolder) {
@@ -247,16 +271,15 @@ static NSArray *SupportEncodings;
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:willBeginUnzipOnZipFileName:)]) {
         [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
     }
-    resultCode = unzGoToFirstFile(unzFile);
+    resultCode = unzGoToFirstFile(self.unzFile);
     if (resultCode == UNZ_OK) {
         unsigned long unzippedSize = 0;
-        NSNumber *encoding;
         do {
             if (self.password) {
-                resultCode = unzOpenCurrentFilePassword(unzFile, [self.password UTF8String]);
+                resultCode = unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
             }
             else {
-                resultCode = unzOpenCurrentFile(unzFile);
+                resultCode = unzOpenCurrentFile(self.unzFile);
             }
             if (resultCode != UNZ_OK) {
                 [JSZipArchive setError:error code:resultCode path:self.zipFilePath];
@@ -266,7 +289,7 @@ static NSArray *SupportEncodings;
             // Read file info
             unz_file_info fileInfo;
             char contentFileNameBuffer[256] = { 0x00, };
-            resultCode = unzGetCurrentFileInfo(unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
+            resultCode = unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
             if (resultCode != UNZ_OK) {
                 [JSZipArchive setError:error code:resultCode path:self.zipFilePath];
                 break;
@@ -274,15 +297,15 @@ static NSArray *SupportEncodings;
 
             // Read file name and find string encoding
             NSString *contentName;
-            if (encoding) {
-                contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[encoding unsignedIntegerValue]];
+            if (self.encoding) {
+                contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
             }
             else {
                 for (NSNumber *supportEncoding in SupportEncodings) {
                     NSString *decodeString = [NSString stringWithCString:contentFileNameBuffer encoding:[supportEncoding unsignedIntegerValue]];
                     if (decodeString) {
                         contentName = decodeString;
-                        encoding = supportEncoding;
+                        self.encoding = supportEncoding;
                         break;
                     }
                 }
@@ -300,7 +323,7 @@ static NSArray *SupportEncodings;
                     Byte block[8192] = { 0x00, };
                     NSMutableData *data = [NSMutableData data];
                     do {
-                        readByte = unzReadCurrentFile(unzFile, block, sizeof(block));
+                        readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
                         [data appendBytes:block length:readByte];
                         unzippedSize += readByte;
                         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
@@ -320,8 +343,8 @@ static NSArray *SupportEncodings;
             NSDictionary *fileAttributes = @{NSFileModificationDate: fileDate};
             [fileManager setAttributes:fileAttributes ofItemAtPath:fullPath error:nil];
 
-            unzCloseCurrentFile(unzFile);
-        } while (unzGoToNextFile(unzFile) != UNZ_END_OF_LIST_OF_FILE);
+            unzCloseCurrentFile(self.unzFile);
+        } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE);
     }
     else {
         [JSZipArchive setError:error code:resultCode path:self.zipFilePath];
@@ -329,52 +352,49 @@ static NSArray *SupportEncodings;
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:didEndUnzipOnZipFileName:)]) {
         [self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];
     }
-    unzClose(unzFile);
 }
 
 - (NSArray *)unzipToArray
 {
-    if (!_isOpened || (self.password == nil && self.encrypted)) {
+    if (!self.isOpened || (self.password == nil && self.encrypted)) {
         return nil;
     }
 
-    unzFile unzFile = unzOpen([self.zipFilePath UTF8String]);
     if (self.delegate) {
         [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
     }
 
     NSMutableArray *unzippedDatas = [NSMutableArray array];
     unsigned long unzippedSize = 0;
-    NSNumber *encoding;
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:willBeginUnzipOnZipFileName:)]) {
         [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
     }
-    unzGoToFirstFile(unzFile);
+    unzGoToFirstFile(self.unzFile);
     do {
         if (self.password) {
-            unzOpenCurrentFilePassword(unzFile, [self.password UTF8String]);
+            unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
         }
         else {
-            unzOpenCurrentFile(unzFile);
+            unzOpenCurrentFile(self.unzFile);
         }
 
         // Read file info
         unz_file_info fileInfo;
         char contentFileNameBuffer[256] = { 0x00, };
-        unzGetCurrentFileInfo(unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
+        unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
 
         // Read file name and find string encoding
         NSString *contentName;
-        if (encoding) {
-            contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[encoding unsignedIntegerValue]];
+        if (self.encoding) {
+            contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
         }
         else {
             for (NSNumber *supportEncoding in SupportEncodings) {
                 NSString *decodeString = [NSString stringWithCString:contentFileNameBuffer encoding:[supportEncoding unsignedIntegerValue]];
                 if (decodeString) {
                     contentName = decodeString;
-                    encoding = supportEncoding;
+                    self.encoding = supportEncoding;
                     break;
                 }
             }
@@ -394,7 +414,7 @@ static NSArray *SupportEncodings;
             Byte block[8192] = { 0x00, };
             NSMutableData *data = [NSMutableData data];
             do {
-                readByte = unzReadCurrentFile(unzFile, block, sizeof(block));
+                readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
                 [data appendBytes:block length:readByte];
                 unzippedSize += readByte;
                 if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
@@ -404,58 +424,54 @@ static NSArray *SupportEncodings;
 
             unzipData.unzippedData = data;
         }
-        unzCloseCurrentFile(unzFile);
+        unzCloseCurrentFile(self.unzFile);
 
         // find data position
         NSMutableString *folderName = [NSMutableString stringWithString:[contentName stringByDeletingLastPathComponent]];
         [folderName appendString:@"/"];
         [self appendUnzippedData:unzipData intoFolderName:folderName inArray:unzippedDatas];
-    } while (unzGoToNextFile(unzFile) != UNZ_END_OF_LIST_OF_FILE);
+    } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE);
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:didEndUnzipOnZipFileName:)]) {
         [self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];
     }
-    unzClose(unzFile);
 
     return [self arrayBySortedUnzippedDatas:unzippedDatas];
 }
 
 - (JSUnzippedData *)unzipFirstFile
 {
-    if (!_isOpened || (self.password == nil && self.encrypted)) {
+    if (!self.isOpened || (self.password == nil && self.encrypted)) {
         return nil;
     }
-    
-    unzFile unzFile = unzOpen([self.zipFilePath UTF8String]);
 
     NSMutableArray *fileList = [NSMutableArray array];
-    NSNumber *encoding;
-    
-    unzGoToFirstFile(unzFile);
+
+    unzGoToFirstFile(self.unzFile);
     do {
         if (self.password) {
-            unzOpenCurrentFilePassword(unzFile, [self.password UTF8String]);
+            unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
         }
         else {
-            unzOpenCurrentFile(unzFile);
+            unzOpenCurrentFile(self.unzFile);
         }
         
         // Read file info
         unz_file_info fileInfo;
         char contentFileNameBuffer[256] = { 0x00, };
-        unzGetCurrentFileInfo(unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
+        unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
         
         // Read file name and find string encoding
         NSString *contentName;
-        if (encoding) {
-            contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[encoding unsignedIntegerValue]];
+        if (self.encoding) {
+            contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
         }
         else {
             for (NSNumber *supportEncoding in SupportEncodings) {
                 NSString *decodeString = [NSString stringWithCString:contentFileNameBuffer encoding:[supportEncoding unsignedIntegerValue]];
                 if (decodeString) {
                     contentName = decodeString;
-                    encoding = supportEncoding;
+                    self.encoding = supportEncoding;
                     break;
                 }
             }
@@ -465,8 +481,8 @@ static NSArray *SupportEncodings;
         if (!isDirectory) {
             [fileList addObject:contentName];
         }
-        unzCloseCurrentFile(unzFile);
-    } while (unzGoToNextFile(unzFile) != UNZ_END_OF_LIST_OF_FILE);
+        unzCloseCurrentFile(self.unzFile);
+    } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE);
 
     NSString *firstFileName = [[fileList sortedArrayUsingComparator:^NSComparisonResult(NSString *item1, NSString *item2) {
         NSUInteger countOfSlashInItem1 = [item1 occurrencesOfCharacter:'/'];
@@ -483,21 +499,21 @@ static NSArray *SupportEncodings;
     }] firstObject];
 
     JSUnzippedData *unzippedData = nil;
-    unzGoToFirstFile(unzFile);
+    unzGoToFirstFile(self.unzFile);
     do {
         if (self.password) {
-            unzOpenCurrentFilePassword(unzFile, [self.password UTF8String]);
+            unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
         }
         else {
-            unzOpenCurrentFile(unzFile);
+            unzOpenCurrentFile(self.unzFile);
 
             // Read file info
             unz_file_info fileInfo;
             char contentFileNameBuffer[256] = { 0x00, };
-            unzGetCurrentFileInfo(unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
+            unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
             
             // Read file name and find string encoding
-            NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[encoding unsignedIntegerValue]];
+            NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
             if ([contentName isEqualToString:firstFileName]) {
                 unzippedData = [JSUnzippedData new];
                 unzippedData.name = contentName;
@@ -507,17 +523,71 @@ static NSArray *SupportEncodings;
                 Byte block[8192] = { 0x00, };
                 NSMutableData *data = [NSMutableData data];
                 do {
-                    readByte = unzReadCurrentFile(unzFile, block, sizeof(block));
+                    readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
                     [data appendBytes:block length:readByte];
                 } while (readByte > 0);
 
                 unzippedData.unzippedData = data;
             }
-            unzCloseCurrentFile(unzFile);
+            unzCloseCurrentFile(self.unzFile);
         }
-    } while (unzGoToNextFile(unzFile) != UNZ_END_OF_LIST_OF_FILE && unzippedData == nil);
-    unzClose(unzFile);
+    } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE && unzippedData == nil);
 
+    return unzippedData;
+}
+
+- (JSUnzippedData *)unzipCurrentFile
+{
+    if (!self.isOpened || (self.password == nil && self.encrypted) || self.endOfList) {
+        return nil;
+    }
+
+    JSUnzippedData *unzippedData = nil;
+    BOOL isDirectory;
+    do {
+        if (self.password) {
+            unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
+        }
+        else {
+            unzOpenCurrentFile(self.unzFile);
+        }
+
+        unz_file_info fileInfo;
+        char contentFileNameBuffer[256] = { 0x00, };
+        unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
+
+        NSString *contentName;
+        if (self.encoding) {
+            contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
+        }
+        else {
+            for (NSNumber *supportEncoding in SupportEncodings) {
+                NSString *decodeString = [NSString stringWithCString:contentFileNameBuffer encoding:[supportEncoding unsignedIntegerValue]];
+                if (decodeString) {
+                    contentName = decodeString;
+                    self.encoding = supportEncoding;
+                    break;
+                }
+            }
+        }
+        isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
+        if (!isDirectory) {
+            NSInteger readByte = 0;
+            Byte block[8192] = { 0x00, };
+            NSMutableData *data = [NSMutableData data];
+            do {
+                readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
+                [data appendBytes:block length:readByte];
+            } while (readByte > 0);
+
+            unzippedData = [JSUnzippedData new];
+            unzippedData.name = contentName;
+            unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+            unzippedData.unzippedData = data;
+        }
+        unzCloseCurrentFile(self.unzFile);
+        self.endOfList = unzGoToNextFile(self.unzFile) == UNZ_END_OF_LIST_OF_FILE;
+    } while (isDirectory && !self.endOfList);
     return unzippedData;
 }
 
@@ -561,17 +631,6 @@ static NSArray *SupportEncodings;
     }
 
     return unzippedDatas;
-}
-
-- (void)reset
-{
-    _zipFilePath = nil;
-    _zipFileName = nil;
-    _password = nil;
-    _comment = nil;
-    _isOpened = NO;
-    _encrypted = NO;
-    _totalSizeOfFiles = 0;
 }
 
 + (void)setError:(NSError *__autoreleasing *)error code:(NSInteger)code path:(NSString *)path
@@ -622,6 +681,11 @@ static NSArray *SupportEncodings;
         }
         *error = [NSError errorWithDomain:Domain code:errorCode userInfo:@{NSLocalizedDescriptionKey: description}];
     }
+}
+
+- (BOOL)isOpened
+{
+    return self.unzFile != NULL;
 }
 
 @end

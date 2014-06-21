@@ -87,6 +87,11 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 - (void)openWithPath:(NSString *)path password:(NSString *)password error:(NSError **)error;
 
 /*!
+ * Close opened file.
+ */
+- (void)close;
+
+/*!
  * Unzip all files in the zip archive into the specified path.
  *
  * @params path Path of unzip.
@@ -137,6 +142,13 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
  * @return A JSUnzipData.
  */
 - (JSUnzippedData *)unzipFirstFile;
+
+/*!
+ * Unzip file on current position.
+ *
+ * @return A JSUnzipData
+ */
+- (JSUnzippedData *)unzipCurrentFile;
 
 @end
 
