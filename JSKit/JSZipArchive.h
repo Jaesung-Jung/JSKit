@@ -140,18 +140,43 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
  *
  * @params indexSet index set for zip content.
  *
- * @return A JSUnzipData.
+ * @return A JSUnzipData instance.
  */
 - (JSUnzippedData *)unzipFirstFile;
 
 /*!
  * Unzip file on current position.
  *
- * @return A JSUnzipData
+ * @return A JSUnzipData instance.
  */
 - (JSUnzippedData *)unzipCurrentFile;
 
+/*!
+ * Unzip file at given index.
+ *
+ * @params index index of file.
+ *
+ * @return A JSUnzipData instance.
+ */
 - (JSUnzippedData *)unzipFileAtIndex:(NSUInteger)index;
+
+/*!
+ * Returns file index of given offset.
+ *
+ * @params offset file offset.
+ *
+ * @return file index of offset.
+ */
+- (NSUInteger)indexOfFileOffset:(NSUInteger)offset;
+
+/*!
+ * Returns file offset at given index.
+ *
+ * @params index index of file.
+ *
+ * @return file offset at index.
+ */
+- (NSUInteger)offsetAtIndex:(NSUInteger)index;
 
 @end
 
@@ -162,5 +187,6 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSUnzippedData : NSObject
 @property (nonatomic, strong) NSDate *modificationDate;
 @property (nonatomic, strong) NSArray *childFiles;
 @property (nonatomic, assign) BOOL isDirectory;
+@property (nonatomic, assign) NSUInteger offset;
 
 @end

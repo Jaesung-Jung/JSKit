@@ -231,7 +231,6 @@ static NSArray *SupportEncodings;
             }
             BOOL isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
             if (!isDirectory) {
-                NSLog(@"index=%ld name=%@", self.fileCount, contentName);
                 _fileCount++;
                 uLong offset = unzGetOffset(self.unzFile);
                 [self.filesOffset addObject:@(offset)];
@@ -402,14 +401,15 @@ static NSArray *SupportEncodings;
         // Convert file name
         NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
 
-        JSUnzippedData *unzipData = [JSUnzippedData new];
-        unzipData.name = contentName;
-        unzipData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+        JSUnzippedData *unzippedData = [JSUnzippedData new];
+        unzippedData.name = contentName;
+        unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+        unzippedData.offset = unzGetOffset(self.unzFile);
 
         BOOL isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
         if (isDirectory) {
-            unzipData.isDirectory = YES;
-            unzipData.childFiles = [NSMutableArray array];
+            unzippedData.isDirectory = YES;
+            unzippedData.childFiles = [NSMutableArray array];
         }
         else {
             NSInteger readByte = 0;
@@ -424,14 +424,14 @@ static NSArray *SupportEncodings;
                 }
             } while (readByte > 0);
 
-            unzipData.data = data;
+            unzippedData.data = data;
         }
         unzCloseCurrentFile(self.unzFile);
 
         // find data position
         NSMutableString *folderName = [NSMutableString stringWithString:[contentName stringByDeletingLastPathComponent]];
         [folderName appendString:@"/"];
-        [self appendUnzippedData:unzipData intoFolderName:folderName inArray:unzippedDatas];
+        [self appendUnzippedData:unzippedData intoFolderName:folderName inArray:unzippedDatas];
     } while (unzGoToNextFile(self.unzFile) != UNZ_END_OF_LIST_OF_FILE);
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:didEndUnzipOnZipFileName:)]) {
@@ -507,6 +507,7 @@ static NSArray *SupportEncodings;
                 unzippedData = [JSUnzippedData new];
                 unzippedData.name = contentName;
                 unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+                unzippedData.offset = unzGetOffset(self.unzFile);
 
                 NSInteger readByte = 0;
                 Byte block[BlockSize] = { 0x00, };
@@ -560,6 +561,7 @@ static NSArray *SupportEncodings;
             unzippedData.name = contentName;
             unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
             unzippedData.data = data;
+            unzippedData.offset = unzGetOffset(self.unzFile);
         }
         unzCloseCurrentFile(self.unzFile);
         self.endOfList = unzGoToNextFile(self.unzFile) == UNZ_END_OF_LIST_OF_FILE;
@@ -601,8 +603,19 @@ static NSArray *SupportEncodings;
     unzippedData.name = contentName;
     unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
     unzippedData.data = data;
+    unzippedData.offset = offset;
     unzCloseCurrentFile(self.unzFile);
     return unzippedData;
+}
+
+- (NSUInteger)indexOfFileOffset:(NSUInteger)offset
+{
+    return [self.filesOffset indexOfObject:@(offset)];
+}
+
+- (NSUInteger)offsetAtIndex:(NSUInteger)index
+{
+    return [self.filesOffset[index] unsignedIntegerValue];
 }
 
 - (void)appendUnzippedData:(JSUnzippedData *)data intoFolderName:(NSString *)folderName inArray:(NSMutableArray *)array
