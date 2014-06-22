@@ -66,6 +66,7 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 @property (nonatomic, readonly) BOOL encrypted;
 
 @property (nonatomic, readonly) BOOL isOpened;
+@property (nonatomic, readonly) NSUInteger fileCount;
 
 @property (nonatomic, weak) id<JSZipArchiveDelegate> delegate;
 
@@ -149,6 +150,8 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
  * @return A JSUnzipData
  */
 - (JSUnzippedData *)unzipCurrentFile;
+
+- (JSUnzippedData *)unzipFileAtIndex:(NSUInteger)index;
 
 @end
 
