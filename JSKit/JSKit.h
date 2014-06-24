@@ -41,6 +41,8 @@
 
 // JSKit
 #import "JSAnimationStep.h"
+#import "JSCircularImageView.h"
+#import "JSZoomableImageView.h"
 #import "JSZipArchive.h"
 
 // Device interface idiom
