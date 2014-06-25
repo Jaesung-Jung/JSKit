@@ -21,8 +21,11 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#import <UIKit/UIKit.h>
+
 @import UIKit.UIImage;
 @import UIKit.UIImageView;
+@import UIKit.UITapGestureRecognizer;
 @import QuartzCore.CALayer;
 
 #import "JSZoomableImageView.h"
@@ -31,6 +34,7 @@
 @interface JSZoomableImageView ()
 
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *testView;
 
 @end
 
@@ -68,9 +72,13 @@
     [self setShowsHorizontalScrollIndicator:NO];
     [self setBouncesZoom:YES];
     [self setDecelerationRate:UIScrollViewDecelerationRateFast];
-    [self setClipsToBounds:NO];
-    [self setMaximumZoomScale:5.0];
+    [self setClipsToBounds:YES];
+    [self setMaximumZoomScale:4.0];
     [self addSubview:self.imageView];
+
+    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomInOutGesture:)];
+    [doubleTapGesture setNumberOfTapsRequired:2];
+    [self addGestureRecognizer:doubleTapGesture];
 }
 
 #pragma mark - Override
@@ -103,6 +111,30 @@
     self.imageView.frame = frameToCenter;
 }
 
+#pragma mark - Gestures
+- (void)zoomInOutGesture:(UITapGestureRecognizer *)recognizer
+{
+    if (self.image == nil) {
+        return;
+    }
+
+    if (self.zoomScale != self.minimumZoomScale) {
+        [self setZoomScale:self.minimumZoomScale animated:YES];
+    }
+    else {
+        CGPoint touchPoint = [recognizer locationInView:self.imageView];
+        CGFloat newZoomScale = (self.maximumZoomScale + self.minimumZoomScale) / 2;
+        [self zoomToPoint:touchPoint withScale:newZoomScale animated:YES];
+    }
+}
+
+- (void)zoomToPoint:(CGPoint)zoomPoint withScale: (CGFloat)scale animated: (BOOL)animated
+{
+    CGFloat xsize = self.bounds.size.width / scale;
+    CGFloat ysize = self.bounds.size.height / scale;
+    [self zoomToRect:CGRectMake(zoomPoint.x - xsize / 2, zoomPoint.y - ysize / 2, xsize, ysize) animated:YES];
+}
+
 #pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
@@ -130,7 +162,7 @@
 {
     if (!_imageView) {
         _imageView = [UIImageView new];
-        [_imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [_imageView setContentMode:UIViewContentModeScaleToFill];
     }
     return _imageView;
 }
@@ -140,6 +172,7 @@
     return self.zoomScale == self.minimumZoomScale ? NO : YES;
 }
 
+#pragma mark - UIImageView Properties
 - (UIImage *)image { return self.imageView.image; }
 
 - (void)setImage:(UIImage *)image { [self.imageView setImage:image]; }

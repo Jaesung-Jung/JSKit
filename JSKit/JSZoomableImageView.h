@@ -60,4 +60,13 @@
  */
 - (BOOL)isAnimating;
 
+/*!
+ * Zoom image at given point.
+ *
+ * @params zoomPoint Center point on zoomed image.
+ * @params scale Zoom scale for image.
+ * @params animated YES if the scrolling should be animated, NO if it should be immediate.
+ */
+- (void)zoomToPoint:(CGPoint)zoomPoint withScale: (CGFloat)scale animated: (BOOL)animated;
+
 @end
