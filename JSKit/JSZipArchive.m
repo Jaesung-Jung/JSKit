@@ -68,7 +68,6 @@ static NSArray *SupportEncodings;
 @property (nonatomic, assign) unzFile unzFile;
 @property (nonatomic, strong) NSNumber *encoding;
 
-@property (nonatomic, assign) BOOL endOfList;
 @property (nonatomic, strong) NSMutableArray *filesOffset;
 
 @end
@@ -265,7 +264,6 @@ static NSArray *SupportEncodings;
         _comment = nil;
         _encrypted = NO;
         _totalSizeOfFiles = 0;
-        _endOfList = NO;
     }
 }
 
@@ -532,52 +530,9 @@ static NSArray *SupportEncodings;
     return unzippedData;
 }
 
-- (JSUnzippedData *)unzipCurrentFile
-{
-    if (!self.isOpened || (self.password == nil && self.encrypted) || self.endOfList) {
-        return nil;
-    }
-
-    JSUnzippedData *unzippedData = nil;
-    BOOL isDirectory;
-    do {
-        if (self.password) {
-            unzOpenCurrentFilePassword(self.unzFile, [self.password UTF8String]);
-        }
-        else {
-            unzOpenCurrentFile(self.unzFile);
-        }
-
-        unz_file_info fileInfo;
-        char contentFileNameBuffer[256] = { 0x00, };
-        unzGetCurrentFileInfo(self.unzFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
-
-        NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
-        isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
-        if (!isDirectory) {
-            NSInteger readByte = 0;
-            Byte block[BlockSize] = { 0x00, };
-            NSMutableData *data = [NSMutableData data];
-            do {
-                readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
-                [data appendBytes:block length:readByte];
-            } while (readByte > 0);
-
-            unzippedData = [JSUnzippedData new];
-            unzippedData.name = contentName;
-            unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
-            unzippedData.data = data;
-            unzippedData.offset = unzGetOffset(self.unzFile);
-        }
-        unzCloseCurrentFile(self.unzFile);
-        self.endOfList = unzGoToNextFile(self.unzFile) == UNZ_END_OF_LIST_OF_FILE;
-    } while (isDirectory && !self.endOfList);
-    return unzippedData;
-}
-
 - (JSUnzippedData *)unzipFileAtIndex:(NSUInteger)index
 {
-    if (!self.isOpened || (self.password == nil && self.encrypted) || self.endOfList || self.fileCount <= index) {
+    if (!self.isOpened || (self.password == nil && self.encrypted) || self.fileCount <= index) {
         return nil;
     }
 

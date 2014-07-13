@@ -136,22 +136,6 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
 - (NSArray *)unzipToArray;
 
 /*!
- * Unzip first file in the zip archive into the memory.
- *
- * @params indexSet index set for zip content.
- *
- * @return A JSUnzipData instance.
- */
-- (JSUnzippedData *)unzipFirstFile;
-
-/*!
- * Unzip file on current position.
- *
- * @return A JSUnzipData instance.
- */
-- (JSUnzippedData *)unzipCurrentFile;
-
-/*!
  * Unzip file at given index.
  *
  * @params index index of file.
