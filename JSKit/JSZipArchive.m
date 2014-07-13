@@ -23,6 +23,7 @@
 
 @import Foundation.NSString;
 @import Foundation.NSFileManager;
+@import Foundation.NSFileHandle;
 @import Foundation.NSData;
 @import Foundation.NSDate;
 @import Foundation.NSError;
@@ -336,19 +337,24 @@ static NSArray *SupportEncodings;
         }
         else {
             if (![fileManager fileExistsAtPath:fullPath] || overwrite) {
+                if (![fileManager fileExistsAtPath:fullPath]) {
+                    [fileManager createFileAtPath:fullPath contents:nil attributes:nil];
+                }
+
                 NSInteger readByte = 0;
-                Byte block[BlockSize] = { 0x00, };
-                NSMutableData *data = [NSMutableData data];
+                Byte blockBuffer[BlockSize] = { 0x00, };
+                NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:fullPath];
                 do {
-                    readByte = unzReadCurrentFile(self.unzFile, block, sizeof(block));
-                    [data appendBytes:block length:readByte];
+                    readByte = unzReadCurrentFile(self.unzFile, blockBuffer, sizeof(blockBuffer));
+                    NSData *block = [NSData dataWithBytes:blockBuffer length:readByte];
+                    [fileHandle writeData:block];
                     unzippedSize += readByte;
                     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
                         [self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];
                     }
                 } while (readByte > 0);
-                
-                [data writeToFile:fullPath atomically:YES];
+
+                [fileHandle closeFile];
             }
             else {
                 unzippedSize += fileInfo.uncompressed_size;
