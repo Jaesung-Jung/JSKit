@@ -162,6 +162,8 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
  */
 - (NSUInteger)offsetAtIndex:(NSUInteger)index;
 
+//- (void)createZip:()
+
 @end
 
 NS_CLASS_AVAILABLE_IOS(2_0) @interface JSUnzippedData : NSObject
