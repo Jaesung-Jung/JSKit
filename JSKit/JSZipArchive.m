@@ -37,7 +37,6 @@
 #import "unzip.h"
 
 static NSString * const Domain = @"com.js.JSKit";
-static const NSTimeInterval DosTimeInterval = 249001655;
 static const NSUInteger BlockSize = 8192;
 
 static NSArray *SupportEncodings;
@@ -250,7 +249,6 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
 {
     if (self.zipFile) {
         if (self.archiveMode == JSZipArchiveModeZip) {
-            NSLog(@"zip close");
             zipClose(self.zipFile, NULL);
         }
         else {
@@ -360,8 +358,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
             }
         }
         // Set file modification date
-        NSDate *fileDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
-        NSDictionary *fileAttributes = @{NSFileModificationDate: fileDate};
+        NSDictionary *fileAttributes = @{NSFileModificationDate: [JSZipArchive dateFromZipTime:fileInfo.tmu_date]};
         [fileManager setAttributes:fileAttributes ofItemAtPath:fullPath error:nil];
         
         unzCloseCurrentFile(self.zipFile);
@@ -407,7 +404,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
 
         JSUnzippedData *unzippedData = [JSUnzippedData new];
         unzippedData.name = contentName;
-        unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+        unzippedData.modificationDate = [JSZipArchive dateFromZipTime:fileInfo.tmu_date];
         unzippedData.offset = unzGetOffset(self.zipFile);
 
         BOOL isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
@@ -510,7 +507,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
             if ([contentName isEqualToString:firstFileName]) {
                 unzippedData = [JSUnzippedData new];
                 unzippedData.name = contentName;
-                unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+                unzippedData.modificationDate = [JSZipArchive dateFromZipTime:fileInfo.tmu_date];
                 unzippedData.offset = unzGetOffset(self.zipFile);
 
                 NSInteger readByte = 0;
@@ -562,7 +559,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     
     unzippedData = [JSUnzippedData new];
     unzippedData.name = contentName;
-    unzippedData.modificationDate = [NSDate dateWithTimeIntervalSince1970:fileInfo.dosDate + DosTimeInterval];
+    unzippedData.modificationDate = [JSZipArchive dateFromZipTime:fileInfo.tmu_date];
     unzippedData.data = data;
     unzippedData.offset = offset;
     unzCloseCurrentFile(self.zipFile);
@@ -653,12 +650,12 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     _zipFileName = [[zipFilePath lastPathComponent] stringByDeletingPathExtension];
 }
 
-- (void)zipWithFilePath:(NSString *)filePath error:(NSError *__autoreleasing *)error
+- (void)zipFilePath:(NSString *)filePath error:(NSError *__autoreleasing *)error
 {
-    [self zipWithFilePath:filePath level:JSZIpArchiveCompressionLevelDefaultCompression error:error];
+    [self zipFilePath:filePath level:JSZIpArchiveCompressionLevelDefaultCompression error:error];
 }
 
-- (void)zipWithFilePath:(NSString *)filePath level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error
+- (void)zipFilePath:(NSString *)filePath level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error
 {
     if (!self.isOpened) {
         [JSZipArchive setError:error code:JSZipArchiveErrorFileIsNotOpened path:nil];
@@ -675,10 +672,10 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         return;
     }
 
-    [self zipWithFilePath:filePath currentPath:@"" fileManager:fileManager level:level error:error];
+    [self zipFilePath:filePath currentPath:@"" fileManager:fileManager level:level error:error];
 }
 
-- (void)zipWithFilePath:(NSString *)filePath currentPath:(NSString *)currentPath fileManager:(NSFileManager *)fileManager level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error {
+- (void)zipFilePath:(NSString *)filePath currentPath:(NSString *)currentPath fileManager:(NSFileManager *)fileManager level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error {
 
     NSDictionary *attributes = [fileManager attributesOfItemAtPath:filePath followingSymbolicLinks:YES error:nil];
     BOOL isDirectory = [[attributes fileType] isEqualToString:NSFileTypeDirectory];
@@ -690,16 +687,8 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         modificationDate = [NSDate date];
     }
 
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *dateComponents = [gregorianCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:modificationDate];
-
     zip_fileinfo zipFileInfo = {.dosDate=0, .internal_fa = 0, .external_fa=0};
-    zipFileInfo.tmz_date.tm_year = (uInt)[dateComponents year];
-    zipFileInfo.tmz_date.tm_mon = (uInt)[dateComponents month];
-    zipFileInfo.tmz_date.tm_mday = (uInt)[dateComponents day];
-    zipFileInfo.tmz_date.tm_hour = (uInt)[dateComponents hour];
-    zipFileInfo.tmz_date.tm_min = (uInt)[dateComponents minute];
-    zipFileInfo.tmz_date.tm_sec = (uInt)[dateComponents second];
+    zipFileInfo.tmz_date = [JSZipArchive zipTimeFromDate:modificationDate];
 
     NSString *fileName;
     if (isDirectory) {
@@ -762,7 +751,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     if (isDirectory) {
         NSArray *files = [fileManager contentsOfDirectoryAtPath:filePath error:nil];
         for (NSString *file in files) {
-            [self zipWithFilePath:[filePath stringByAppendingPathComponent:file] currentPath:fileName fileManager:fileManager level:level error:error];
+            [self zipFilePath:[filePath stringByAppendingPathComponent:file] currentPath:fileName fileManager:fileManager level:level error:error];
         }
     }
 }
@@ -777,6 +766,36 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         crc = crc32(crc, (const Bytef*)[block bytes], (uInt)[block length]);
     } while (block != nil && [block length] != 0);
     return 0;
+}
+
++ (NSDate *)dateFromZipTime:(tm_unz)time
+{
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    [dateComponents setYear:time.tm_year];
+    [dateComponents setMonth:time.tm_mon + 1];
+    [dateComponents setDay:time.tm_mday];
+    [dateComponents setHour:time.tm_hour];
+    [dateComponents setMinute:time.tm_min];
+    [dateComponents setSecond:time.tm_sec];
+
+    return [gregorianCalendar dateFromComponents:dateComponents];
+}
+
++ (tm_zip)zipTimeFromDate:(NSDate *)date
+{
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorianCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
+    tm_zip zipTime = {
+        .tm_year = (uInt)[dateComponents year],
+        .tm_mon = (uInt)[dateComponents month] - 1,
+        .tm_mday = (uInt)[dateComponents day],
+        .tm_hour = (uInt)[dateComponents hour],
+        .tm_min = (uInt)[dateComponents minute],
+        .tm_sec = (uInt)[dateComponents second]
+    };
+
+    return zipTime;
 }
 
 + (void)setError:(NSError *__autoreleasing *)error code:(NSInteger)code path:(NSString *)path
