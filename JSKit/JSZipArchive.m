@@ -26,6 +26,8 @@
 @import Foundation.NSFileHandle;
 @import Foundation.NSData;
 @import Foundation.NSDate;
+@import Foundation.NSCalendar;
+@import Foundation.NSLocale;
 @import Foundation.NSError;
 
 #import "JSZipArchive.h"
@@ -38,29 +40,18 @@ static NSString * const Domain = @"com.js.JSKit";
 static const NSTimeInterval DosTimeInterval = 249001655;
 static const NSUInteger BlockSize = 8192;
 
-/*@interface JSZipContent ()
+static NSArray *SupportEncodings;
 
-- (void)setName:(NSString *)name;
-- (void)setCompressedSize:(NSUInteger)compressedSize;
-- (void)setUncompressedSize:(NSUInteger)uncompressedSize;
-- (void)setDate:(NSTimeInterval)date;
-- (void)setCrc:(NSUInteger)crc;
-- (void)setDirectory:(BOOL)directory;
+typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
+    JSZipArchiveModeZip,
+    JSZipArchiveModeUnzip,
+};
+
+@interface NSFileManager (JSZipArchive)
+
+- (NSDictionary *)attributesOfItemAtPath:(NSString *)path followingSymbolicLinks:(BOOL)followingSymbolicLinks error:(NSError * *)error;
 
 @end
-
-@implementation JSZipContent
-
-- (void)setName:(NSString *)name { _name = name; }
-- (void)setCompressedSize:(NSUInteger)compressedSize { _compressedSize = compressedSize; }
-- (void)setUncompressedSize:(NSUInteger)uncompressedSize { _uncompressedSize = uncompressedSize; }
-- (void)setDate:(NSTimeInterval)date { _date = date; }
-- (void)setCrc:(NSUInteger)crc { _crc = crc; }
-- (void)setDirectory:(BOOL)directory { _isDirectory = directory; }
-
-@end*/
-
-static NSArray *SupportEncodings;
 
 @interface JSZipArchive ()
 
@@ -69,6 +60,8 @@ static NSArray *SupportEncodings;
 @property (nonatomic, strong) NSNumber *encoding;
 
 @property (nonatomic, strong) NSMutableArray *filesOffset;
+
+@property (nonatomic, assign) JSZipArchiveMode archiveMode;
 
 @end
 
@@ -183,6 +176,7 @@ static NSArray *SupportEncodings;
         return;
     }
 
+    self.archiveMode = JSZipArchiveModeUnzip;
     unz_global_info globalInfo;
     resultCode = unzGetGlobalInfo(self.zipFile, &globalInfo);
     if (resultCode == UNZ_OK) {
@@ -254,8 +248,14 @@ static NSArray *SupportEncodings;
 
 - (void)close
 {
-    if (_zipFile) {
-        unzClose(_zipFile);
+    if (self.zipFile) {
+        if (self.archiveMode == JSZipArchiveModeZip) {
+            NSLog(@"zip close");
+            zipClose(self.zipFile, NULL);
+        }
+        else {
+            unzClose(_zipFile);
+        }
         _zipFile = nil;
         _encoding = nil;
         _zipFilePath = nil;
@@ -621,6 +621,164 @@ static NSArray *SupportEncodings;
     return unzippedDatas;
 }
 
+- (void)createZipFile:(NSString *)zipFilePath error:(NSError *__autoreleasing *)error
+{
+    [self createZipFile:zipFilePath password:nil error:error];
+}
+
+- (void)createZipFile:(NSString *)zipFilePath password:(NSString *)password error:(NSError *__autoreleasing *)error
+{
+    [self createZipFile:zipFilePath password:password overwrite:YES error:nil];
+}
+
+- (void)createZipFile:(NSString *)zipFilePath password:(NSString *)password overwrite:(BOOL)overwrite error:(NSError *__autoreleasing *)error
+{
+    [self close];
+
+    if (!overwrite && [[NSFileManager defaultManager] fileExistsAtPath:zipFilePath]) {
+        return;
+    }
+
+    self.zipFile = zipOpen([zipFilePath UTF8String], APPEND_STATUS_CREATE);
+    if (!self.zipFile) {
+        [JSZipArchive setError:error code:JSZipArchiveErrorFileOpen path:zipFilePath];
+        return;
+    }
+
+    self.archiveMode = JSZipArchiveModeZip;
+    if (password != nil && [password length] > 0) {
+        self.password = password;
+    }
+    _zipFilePath = zipFilePath;
+    _zipFileName = [[zipFilePath lastPathComponent] stringByDeletingPathExtension];
+}
+
+- (void)zipWithFilePath:(NSString *)filePath error:(NSError *__autoreleasing *)error
+{
+    [self zipWithFilePath:filePath level:JSZIpArchiveCompressionLevelDefaultCompression error:error];
+}
+
+- (void)zipWithFilePath:(NSString *)filePath level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error
+{
+    if (!self.isOpened) {
+        [JSZipArchive setError:error code:JSZipArchiveErrorFileIsNotOpened path:nil];
+        return;
+    }
+    else if (!self.archiveMode == JSZipArchiveModeZip) {
+        [JSZipArchive setError:error code:JSZipArchiveErrorWrongArchiveMode path:nil];
+        return;
+    }
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:filePath]) {
+        [JSZipArchive setError:error code:JSZipArchiveErrorFileIsNotExist path:filePath];
+        return;
+    }
+
+    [self zipWithFilePath:filePath currentPath:@"" fileManager:fileManager level:level error:error];
+}
+
+- (void)zipWithFilePath:(NSString *)filePath currentPath:(NSString *)currentPath fileManager:(NSFileManager *)fileManager level:(JSZIpArchiveCompressionLevel)level error:(NSError *__autoreleasing *)error {
+
+    NSDictionary *attributes = [fileManager attributesOfItemAtPath:filePath followingSymbolicLinks:YES error:nil];
+    BOOL isDirectory = [[attributes fileType] isEqualToString:NSFileTypeDirectory];
+    NSDate *modificationDate;
+    if (attributes) {
+        modificationDate = [attributes fileModificationDate];
+    }
+    if (modificationDate == nil) {
+        modificationDate = [NSDate date];
+    }
+
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorianCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:modificationDate];
+
+    zip_fileinfo zipFileInfo = {.dosDate=0, .internal_fa = 0, .external_fa=0};
+    zipFileInfo.tmz_date.tm_year = (uInt)[dateComponents year];
+    zipFileInfo.tmz_date.tm_mon = (uInt)[dateComponents month];
+    zipFileInfo.tmz_date.tm_mday = (uInt)[dateComponents day];
+    zipFileInfo.tmz_date.tm_hour = (uInt)[dateComponents hour];
+    zipFileInfo.tmz_date.tm_min = (uInt)[dateComponents minute];
+    zipFileInfo.tmz_date.tm_sec = (uInt)[dateComponents second];
+
+    NSString *fileName;
+    if (isDirectory) {
+        fileName = [[currentPath stringByAppendingString:[filePath lastPathComponent]] stringByAppendingString:@"/"];
+    }
+    else {
+        fileName = [currentPath stringByAppendingString:[filePath lastPathComponent]];
+    }
+
+    NSInteger resultCode;
+    if (!self.password) {
+        resultCode = zipOpenNewFileInZip(self.zipFile, // file
+                                         [fileName cStringUsingEncoding:NSUTF8StringEncoding], // name
+                                         &zipFileInfo, // attribute
+                                         NULL, 0, // external field local
+                                         NULL, 0, // external field global
+                                         NULL, // comment
+                                         Z_DEFLATED, // method
+                                         level); // level
+    }
+    else {
+        uLong crc = [JSZipArchive crcForFile:filePath];
+        resultCode = zipOpenNewFileInZip3(self.zipFile, // file
+                                          [fileName cStringUsingEncoding:NSUTF8StringEncoding], // name
+                                          &zipFileInfo, // attribute
+                                          NULL, 0, // external field local
+                                          NULL, 0, // external field global
+                                          NULL, // comment
+                                          Z_DEFLATED, // method
+                                          level, // level
+                                          0, // raw
+                                          -MAX_WBITS, // window bits
+                                          DEF_MEM_LEVEL, // mem level
+                                          Z_DEFAULT_STRATEGY, // strategy
+                                          [self.password cStringUsingEncoding:NSASCIIStringEncoding], // password
+                                          crc); // crc
+    }
+
+    if (resultCode != Z_OK) {
+        [JSZipArchive setError:error code:resultCode path:filePath];
+        return;
+    }
+
+    if (!isDirectory) {
+        NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+        NSData *block;
+        do {
+            block = [fileHandle readDataOfLength:BlockSize];
+            zipWriteInFileInZip(self.zipFile, [block bytes], (uInt)[block length]);
+        } while (block != nil && [block length] != 0);
+        [fileHandle closeFile];
+    }
+
+    resultCode = zipCloseFileInZip(self.zipFile);
+    if (resultCode != Z_OK) {
+        [JSZipArchive setError:error code:resultCode path:filePath];
+        return;
+    }
+
+    if (isDirectory) {
+        NSArray *files = [fileManager contentsOfDirectoryAtPath:filePath error:nil];
+        for (NSString *file in files) {
+            [self zipWithFilePath:[filePath stringByAppendingPathComponent:file] currentPath:fileName fileManager:fileManager level:level error:error];
+        }
+    }
+}
+
++ (uLong)crcForFile:(NSString *)filePath
+{
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+    NSData *block;
+    uLong crc = 0;
+    do {
+        block = [fileHandle readDataOfLength:BlockSize];
+        crc = crc32(crc, (const Bytef*)[block bytes], (uInt)[block length]);
+    } while (block != nil && [block length] != 0);
+    return 0;
+}
+
 + (void)setError:(NSError *__autoreleasing *)error code:(NSInteger)code path:(NSString *)path
 {
     if (error) {
@@ -661,7 +819,16 @@ static NSArray *SupportEncodings;
                 errorCode = JSZipArchiveErrorInternalError;
                 description = [NSString stringWithFormat:@"Internal error. (%@)", path];
                 break;
-                
+
+            case JSZipArchiveErrorWrongArchiveMode:
+                errorCode = code;
+                description = @"Wrong archive mode.";
+
+            case JSZipArchiveErrorFileIsNotExist:
+                errorCode = code;
+                description = [NSString stringWithFormat:@"File is not exist. (%@)", path];
+                break;
+
             default:
                 errorCode = JSZipArchiveErrorUnknown;
                 description = [NSString stringWithFormat:@"Unknown error. (%@)", path];
@@ -682,6 +849,27 @@ static NSArray *SupportEncodings;
         _filesOffset = [NSMutableArray array];
     }
     return _filesOffset;
+}
+
+@end
+
+@implementation NSFileManager (JSZipArchive)
+
+- (NSDictionary *)attributesOfItemAtPath:(NSString *)path followingSymbolicLinks:(BOOL)followingSymbolicLinks error:(NSError *__autoreleasing *)error
+{
+    NSDictionary *attribues = [self attributesOfItemAtPath:path error:error];
+    if (followingSymbolicLinks && attribues && error == nil) {
+        if ([[attribues fileType] isEqualToString:NSFileTypeSymbolicLink]) {
+            NSString *symbolicLinkPath = [self destinationOfSymbolicLinkAtPath:path error:error];
+            if (symbolicLinkPath && error == nil) {
+                return [self attributesOfItemAtPath:symbolicLinkPath followingSymbolicLinks:followingSymbolicLinks error:error];
+            }
+            else {
+                return nil;
+            }
+        }
+    }
+    return attribues;
 }
 
 @end

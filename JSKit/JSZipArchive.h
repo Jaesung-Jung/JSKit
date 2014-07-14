@@ -41,7 +41,16 @@ typedef NS_ENUM(NSInteger, JSZipArchiveError) {
     JSZipArchiveErrorBadPassword,
     JSZipArchiveErrorInternalError,
     JSZipArchiveErrorCRC,
+    JSZipArchiveErrorWrongArchiveMode,
+    JSZipArchiveErrorFileIsNotExist,
     JSZipArchiveErrorUnknown,
+};
+
+typedef NS_ENUM(NSInteger, JSZIpArchiveCompressionLevel) {
+    JSZIpArchiveCompressionLevelNoCompression       = 0,
+    JSZIpArchiveCompressionLevelBestSpeed           = 1,
+    JSZIpArchiveCompressionLevelBestCompression     = 9,
+    JSZIpArchiveCompressionLevelDefaultCompression  = -1
 };
 
 @class JSZipArchive;
@@ -162,7 +171,46 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface JSZipArchive : NSObject
  */
 - (NSUInteger)offsetAtIndex:(NSUInteger)index;
 
-//- (void)createZip:()
+/*!
+ * Create zip file.
+ *
+ * @params error On input, a pointer to an error object. If an error occurs, this pointer is set to an actual error object containing the error information.
+ */
+- (void)createZipFile:(NSString *)zipFilePath error:(NSError **)error;
+
+/*!
+ * Create encrypted zip file using given password.
+ *
+ * @params password Password for encrypted zip file.
+ * @params error On input, a pointer to an error object. If an error occurs, this pointer is set to an actual error object containing the error information.
+ */
+- (void)createZipFile:(NSString *)zipFilePath password:(NSString *)password error:(NSError **)error;
+
+/*!
+ * Create encrypted zip file using given password.
+ *
+ * @params password Password for encrypted zip file.
+ * @params overwrite If yes, existing files be overwite.
+ * @params error On input, a pointer to an error object. If an error occurs, this pointer is set to an actual error object containing the error information.
+ */
+- (void)createZipFile:(NSString *)zipFilePath password:(NSString *)password overwrite:(BOOL)overwrite error:(NSError **)error;
+
+/*!
+ * Zip files into the specified path.
+ *
+ * @params filePath File path for compress.
+ * @params error On input, a pointer to an error object. If an error occurs, this pointer is set to an actual error object containing the error information.
+ */
+- (void)zipFilePath:(NSString *)filePath error:(NSError **)error;
+
+/*!
+ * Zip files into the specified path.
+ *
+ * @params filePath File path for compress.
+ * @params level Compress level.
+ * @params error On input, a pointer to an error object. If an error occurs, this pointer is set to an actual error object containing the error information.
+ */
+- (void)zipFilePath:(NSString *)filePath level:(JSZIpArchiveCompressionLevel)level error:(NSError **)error;
 
 @end
 
