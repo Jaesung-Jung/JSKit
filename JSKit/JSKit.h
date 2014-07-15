@@ -21,9 +21,6 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// AssetsLibrary+JSKit
-#import "ALAssetsGroup+Properties.h"
-
 // Foundation+JSKit
 #import "NSDate+String.h"
 #import "NSObject+Associated.h"
