@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		290161C618BC926100F93263 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 290161C518BC926100F93263 /* UIImage+Color.m */; };
 		4B3CFC7D18C48430007DCCCB /* JSImageColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3CFC7C18C48430007DCCCB /* JSImageColorViewController.m */; };
-		4B3E25EC1957F1A30029077C /* JSZoomableImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3E25EB1957F1A30029077C /* JSZoomableImageViewController.m */; };
 		4B43814E18B9CC5D0051FC0D /* JSCircularImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */; };
 		4B43815C18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815B18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m */; };
 		4B43815F18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B43815E18B9E65F0051FC0D /* JSAnimationStepDemoViewController.m */; };
@@ -17,6 +16,7 @@
 		4B6612E8193ED53B008E0C8D /* JSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6612E7193ED53B008E0C8D /* JSZipArchive.m */; };
 		4B6612ED193EEC16008E0C8D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B6612D1193EAA3A008E0C8D /* libz.dylib */; };
 		4B74D58719764BE600947EAB /* demo.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4B74D58619764BE600947EAB /* demo.zip */; };
+		4B74D58A19765E5200947EAB /* JSZoomableImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D58919765E5200947EAB /* JSZoomableImageViewController.m */; };
 		4B8197CF1976445400EEF345 /* JSZipArchiveDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8197CE1976445400EEF345 /* JSZipArchiveDemoViewController.m */; };
 		4B91601918B8E9980068D4A9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B91601818B8E9980068D4A9 /* Foundation.framework */; };
 		4B91601B18B8E9980068D4A9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B91601A18B8E9980068D4A9 /* CoreGraphics.framework */; };
@@ -78,8 +78,6 @@
 		290161C518BC926100F93263 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		4B3CFC7B18C48430007DCCCB /* JSImageColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSImageColorViewController.h; sourceTree = "<group>"; };
 		4B3CFC7C18C48430007DCCCB /* JSImageColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSImageColorViewController.m; sourceTree = "<group>"; };
-		4B3E25EA1957F1A30029077C /* JSZoomableImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSZoomableImageViewController.h; sourceTree = "<group>"; };
-		4B3E25EB1957F1A30029077C /* JSZoomableImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSZoomableImageViewController.m; sourceTree = "<group>"; };
 		4B43814C18B9CC5D0051FC0D /* JSCircularImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCircularImageView.h; sourceTree = "<group>"; };
 		4B43814D18B9CC5D0051FC0D /* JSCircularImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCircularImageView.m; sourceTree = "<group>"; };
 		4B43815A18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBlurEffectImageDemoViewController.h; sourceTree = "<group>"; };
@@ -92,6 +90,8 @@
 		4B6612E6193ED53B008E0C8D /* JSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSZipArchive.h; sourceTree = "<group>"; };
 		4B6612E7193ED53B008E0C8D /* JSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSZipArchive.m; sourceTree = "<group>"; };
 		4B74D58619764BE600947EAB /* demo.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = demo.zip; sourceTree = "<group>"; };
+		4B74D58819765E5200947EAB /* JSZoomableImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSZoomableImageViewController.h; sourceTree = "<group>"; };
+		4B74D58919765E5200947EAB /* JSZoomableImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSZoomableImageViewController.m; sourceTree = "<group>"; };
 		4B8197CD1976445400EEF345 /* JSZipArchiveDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSZipArchiveDemoViewController.h; sourceTree = "<group>"; };
 		4B8197CE1976445400EEF345 /* JSZipArchiveDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSZipArchiveDemoViewController.m; sourceTree = "<group>"; };
 		4B91601518B8E9980068D4A9 /* JSKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,8 +175,6 @@
 		4B3E25E91957F1690029077C /* EtcSection */ = {
 			isa = PBXGroup;
 			children = (
-				4B3E25EA1957F1A30029077C /* JSZoomableImageViewController.h */,
-				4B3E25EB1957F1A30029077C /* JSZoomableImageViewController.m */,
 				4B8197CD1976445400EEF345 /* JSZipArchiveDemoViewController.h */,
 				4B8197CE1976445400EEF345 /* JSZipArchiveDemoViewController.m */,
 			);
@@ -195,6 +193,8 @@
 		4B43815018B9DCB40051FC0D /* ImageSection */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D58819765E5200947EAB /* JSZoomableImageViewController.h */,
+				4B74D58919765E5200947EAB /* JSZoomableImageViewController.m */,
 				4B43815A18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.h */,
 				4B43815B18B9E6510051FC0D /* JSBlurEffectImageDemoViewController.m */,
 				4B3CFC7B18C48430007DCCCB /* JSImageColorViewController.h */,
@@ -487,7 +487,7 @@
 				4BA768531957EF4C0096573B /* JSZoomableImageView.m in Sources */,
 				4B6612E8193ED53B008E0C8D /* JSZipArchive.m in Sources */,
 				4B91602918B8E9980068D4A9 /* JSAppDelegate.m in Sources */,
-				4B3E25EC1957F1A30029077C /* JSZoomableImageViewController.m in Sources */,
+				4B74D58A19765E5200947EAB /* JSZoomableImageViewController.m in Sources */,
 				4BB96F4A18B8EE39009AEB91 /* NSDate+String.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
