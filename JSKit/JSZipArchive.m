@@ -30,6 +30,8 @@
 @import Foundation.NSLocale;
 @import Foundation.NSError;
 
+@import Dispatch;
+
 #import "JSZipArchive.h"
 #import "NSString+CharacterCount.h"
 
@@ -300,7 +302,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     }
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:willBeginUnzipOnZipFileName:)]) {
-        [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
+        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];});
     }
 
     unsigned long unzippedSize = 0;
@@ -346,7 +348,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
                     [fileHandle writeData:block];
                     unzippedSize += readByte;
                     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
-                        [self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];
+                        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];});
                     }
                 } while (readByte > 0);
 
@@ -354,7 +356,9 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
             }
             else {
                 unzippedSize += fileInfo.uncompressed_size;
-                [self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];
+                if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];});
+                }
             }
         }
         // Set file modification date
@@ -365,7 +369,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     } while (unzGoToNextFile(self.zipFile) != UNZ_END_OF_LIST_OF_FILE);
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:didEndUnzipOnZipFileName:)]) {
-        [self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];
+        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];});
     }
 }
 
@@ -376,14 +380,14 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     }
 
     if (self.delegate) {
-        [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
+        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];});
     }
 
     NSMutableArray *unzippedDatas = [NSMutableArray array];
     unsigned long unzippedSize = 0;
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:willBeginUnzipOnZipFileName:)]) {
-        [self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];
+        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self willBeginUnzipOnZipFileName:self.zipFileName];});
     }
     unzGoToFirstFile(self.zipFile);
     do {
@@ -421,7 +425,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
                 [data appendBytes:block length:readByte];
                 unzippedSize += readByte;
                 if (self.delegate != nil && [self.delegate respondsToSelector:@selector(zipArchive:updateProgress:onUnzipFileName:)]) {
-                    [self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];
+                    dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self updateProgress:(double)unzippedSize / (double)self.totalSizeOfFiles onUnzipFileName:contentName];});
                 }
             } while (readByte > 0);
 
@@ -436,7 +440,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     } while (unzGoToNextFile(self.zipFile) != UNZ_END_OF_LIST_OF_FILE);
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(zipArchive:didEndUnzipOnZipFileName:)]) {
-        [self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];
+        dispatch_async(dispatch_get_main_queue(), ^{[self.delegate zipArchive:self didEndUnzipOnZipFileName:self.zipFileName];});
     }
 
     return [self arrayBySortedUnzippedDatas:unzippedDatas];
