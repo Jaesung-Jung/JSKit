@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zyg-Pt-yVe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zyg-Pt-yVe">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -44,13 +44,14 @@
                         <segue destination="UbN-hz-9Fv" kind="push" identifier="CircularImageViewSegue" id="qP2-tl-0SC"/>
                         <segue destination="HY8-5z-sap" kind="push" identifier="ImageColorSegue" id="5tC-Nj-BHI"/>
                         <segue destination="L0K-sg-bel" kind="push" identifier="ZoomableImageViewSegue" id="R3Z-gw-Z77"/>
+                        <segue destination="ngA-ML-ayo" kind="push" identifier="ZipArchiveSegue" id="thy-44-MYT"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YuK-aU-K9s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="915" y="594"/>
         </scene>
-        <!--Zoomable Image View Controller - Zoomable Scroll View-->
+        <!--Zoomable Image View Controller - Zoomable Image View-->
         <scene sceneID="Xfb-LT-Qbg">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="L0K-sg-bel" customClass="JSZoomableImageViewController" sceneMemberID="viewController">
@@ -75,7 +76,7 @@
                             <constraint firstItem="8ir-c8-dUQ" firstAttribute="top" secondItem="yj2-sj-6Ii" secondAttribute="bottom" id="nqe-nQ-EXI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Zoomable Scroll View" id="ACa-lP-M7A"/>
+                    <navigationItem key="navigationItem" title="Zoomable Image View" id="ACa-lP-M7A"/>
                     <connections>
                         <outlet property="zoomableImageView" destination="yj2-sj-6Ii" id="hc6-76-7F8"/>
                     </connections>
@@ -83,6 +84,138 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9GA-Oc-0Fr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1382" y="1622"/>
+        </scene>
+        <!--Zip Archive Demo View Controller - Zip Archive-->
+        <scene sceneID="jTt-a4-2F2">
+            <objects>
+                <viewController id="ngA-ML-ayo" customClass="JSZipArchiveDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="c9i-jt-dJU"/>
+                        <viewControllerLayoutGuide type="bottom" id="vOi-1I-asZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nEh-An-RlE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dIJ-ot-AyM">
+                                <rect key="frame" x="20" y="104" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="cKb-aF-1Zf"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Document"/>
+                                    <segment title="Caches"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlValueChanged:" destination="ngA-ML-ayo" eventType="valueChanged" id="gFi-es-Pz7"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FILE : demo.zip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QG7-Vr-fYX">
+                                <rect key="frame" x="20" y="74" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="7QE-PW-94T"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eug-Sz-RQP">
+                                <rect key="frame" x="20" y="140" width="140" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="76A-Bl-Yna"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Unzip to Documents">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="unzipAction:" destination="ngA-ML-ayo" eventType="touchUpInside" id="3nu-tS-9fW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RK8-x1-qzc">
+                                <rect key="frame" x="161" y="140" width="140" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="P9N-bV-vuf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Make ZIP to caches">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="zipAction:" destination="ngA-ML-ayo" eventType="touchUpInside" id="GNd-m5-RaE"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rFq-lr-g6T">
+                                <rect key="frame" x="20" y="178" width="280" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="HQb-WS-5ad">
+                                <rect key="frame" x="0.0" y="188" width="320" height="380"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="QdT-bo-dEK" detailTextLabel="tCd-to-rlI" style="IBUITableViewCellStyleSubtitle" id="Pjh-JK-hKE">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pjh-JK-hKE" id="EgC-iZ-gTG">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QdT-bo-dEK">
+                                                    <rect key="frame" x="15" y="3" width="34" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tCd-to-rlI">
+                                                    <rect key="frame" x="15" y="25" width="43" height="15"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="ngA-ML-ayo" id="QW3-oK-f62"/>
+                                    <outlet property="delegate" destination="ngA-ML-ayo" id="GIY-0b-OKP"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="QG7-Vr-fYX" secondAttribute="centerX" id="1BM-6k-LHR"/>
+                            <constraint firstItem="RK8-x1-qzc" firstAttribute="top" secondItem="dIJ-ot-AyM" secondAttribute="bottom" constant="8" id="2kw-Qj-O93"/>
+                            <constraint firstAttribute="trailing" secondItem="rFq-lr-g6T" secondAttribute="trailing" constant="20" id="3vz-wj-aNU"/>
+                            <constraint firstItem="HQb-WS-5ad" firstAttribute="top" secondItem="rFq-lr-g6T" secondAttribute="bottom" constant="8" id="6rm-4F-hbU"/>
+                            <constraint firstAttribute="centerX" secondItem="dIJ-ot-AyM" secondAttribute="centerX" id="9Kj-UO-1zl"/>
+                            <constraint firstAttribute="trailing" secondItem="HQb-WS-5ad" secondAttribute="trailing" id="CBU-Ea-pcS"/>
+                            <constraint firstAttribute="trailing" secondItem="RK8-x1-qzc" secondAttribute="trailing" constant="19" id="KA1-KP-kVs"/>
+                            <constraint firstItem="rFq-lr-g6T" firstAttribute="leading" secondItem="nEh-An-RlE" secondAttribute="leading" constant="20" id="Rlf-CT-Epf"/>
+                            <constraint firstItem="dIJ-ot-AyM" firstAttribute="top" secondItem="c9i-jt-dJU" secondAttribute="bottom" constant="40" id="aPY-4g-joB"/>
+                            <constraint firstItem="eug-Sz-RQP" firstAttribute="top" secondItem="dIJ-ot-AyM" secondAttribute="bottom" constant="8" id="pjZ-rd-UnE"/>
+                            <constraint firstItem="QG7-Vr-fYX" firstAttribute="top" secondItem="c9i-jt-dJU" secondAttribute="bottom" constant="10" id="qi3-eT-Pks"/>
+                            <constraint firstItem="rFq-lr-g6T" firstAttribute="top" secondItem="dIJ-ot-AyM" secondAttribute="bottom" constant="46" id="tMI-8h-bAc"/>
+                            <constraint firstItem="HQb-WS-5ad" firstAttribute="leading" secondItem="nEh-An-RlE" secondAttribute="leading" id="tu5-cn-PLo"/>
+                            <constraint firstItem="vOi-1I-asZ" firstAttribute="top" secondItem="HQb-WS-5ad" secondAttribute="bottom" id="w5W-vw-xj2"/>
+                            <constraint firstItem="eug-Sz-RQP" firstAttribute="leading" secondItem="nEh-An-RlE" secondAttribute="leading" constant="20" id="wme-Hw-fgh"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Zip Archive" id="LeR-UU-Rtw"/>
+                    <connections>
+                        <outlet property="progressView" destination="rFq-lr-g6T" id="3kd-GO-h9B"/>
+                        <outlet property="tableView" destination="HQb-WS-5ad" id="BVw-Eo-Yew"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ThY-7Y-zog" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1810" y="1622"/>
         </scene>
         <!--Blur Effect Image Demo View Controller - Blur Effect Image-->
         <scene sceneID="9U5-Wq-kr2">

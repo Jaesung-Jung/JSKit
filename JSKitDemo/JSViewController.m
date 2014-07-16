@@ -63,7 +63,8 @@
                            @"Image"     : @[[JSTestItem itemWithTestName:@"Blur Effect Image"   segueIdentifier:@"BlurEffectImageSegue"],
                                             [JSTestItem itemWithTestName:@"Circular Image View" segueIdentifier:@"CircularImageViewSegue"],
                                             [JSTestItem itemWithTestName:@"Image Color"         segueIdentifier:@"ImageColorSegue"],
-                                            [JSTestItem itemWithTestName:@"Zoomable Image View" segueIdentifier:@"ZoomableImageViewSegue"]]};
+                                            [JSTestItem itemWithTestName:@"Zoomable Image View" segueIdentifier:@"ZoomableImageViewSegue"]],
+                           @"Etc"       : @[[JSTestItem itemWithTestName:@"Zip Archive"         segueIdentifier:@"ZipArchiveSegue"]]};
 
     self.testItemSections = [self.testItemTable allKeys];
 }
