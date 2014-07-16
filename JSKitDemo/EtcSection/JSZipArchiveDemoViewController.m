@@ -69,10 +69,10 @@
 - (IBAction)unzipAction:(UIButton *)sender
 {
     NSString *file = [[NSBundle mainBundle] pathForResource:@"demo" ofType:@"zip"];
-
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     [self.zipArchive openWithPath:file error:nil];
     dispatch_async(self.serialDispatchQueue, ^{
-        [self.zipArchive unzipToPath:self.currentPath createFolder:NO overwrite:YES error:nil];
+        [self.zipArchive unzipToPath:documentPath createFolder:NO overwrite:YES error:nil];
         [self.zipArchive close];
 
         dispatch_async(dispatch_get_main_queue(), ^{
