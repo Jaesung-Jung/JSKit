@@ -22,6 +22,9 @@
 //
 
 @import Foundation.NSObject;
+@import Foundation.NSData;
+@import Foundation.NSDate;
+@import Foundation.NSError;
 
 #if defined(__LP64__) && __LP64__
 # define PROGRESS_TYPE double
