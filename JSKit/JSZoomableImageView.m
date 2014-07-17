@@ -21,18 +21,23 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@import UIKit.UIImage;
+@import UIKit.UIScrollView;
 @import UIKit.UIImageView;
 @import UIKit.UITapGestureRecognizer;
-@import QuartzCore.CALayer;
 
 #import "JSZoomableImageView.h"
 #import "UIImage+SizeOfFit.h"
 
-@interface JSZoomableImageView ()
+@interface __UIScrollView : UIScrollView
 
+@property (nonatomic, weak) JSZoomableImageView *zoomableView;
+
+@end
+
+@interface JSZoomableImageView () <UIScrollViewDelegate>
+
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIView *testView;
 
 @end
 
@@ -65,63 +70,42 @@
 
 - (void)setup
 {
-    [self setDelegate:self];
-    [self setShowsVerticalScrollIndicator:NO];
-    [self setShowsHorizontalScrollIndicator:NO];
-    [self setBouncesZoom:YES];
-    [self setDecelerationRate:UIScrollViewDecelerationRateFast];
+    [self.scrollView setDelegate:self];
+    [self.scrollView setShowsVerticalScrollIndicator:NO];
+    [self.scrollView setShowsHorizontalScrollIndicator:NO];
+    [self.scrollView setBouncesZoom:YES];
+    [self.scrollView setDecelerationRate:UIScrollViewDecelerationRateFast];
+    [self.scrollView setMaximumZoomScale:4.0];
+    [self.scrollView addSubview:self.imageView];
+    
     [self setClipsToBounds:YES];
-    [self setMaximumZoomScale:4.0];
-    [self addSubview:self.imageView];
-
-    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomInOutGesture:)];
+    
+    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureAction:)];
     [doubleTapGesture setNumberOfTapsRequired:2];
-    [self addGestureRecognizer:doubleTapGesture];
-}
-
-#pragma mark - Override
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    if (!self.isZommed && !CGRectEqualToRect(self.bounds, self.imageView.frame)) {
-        CGRect imageViewFrame = [self.imageView.image frameOfFitInRect:self.bounds];
-        [self.imageView setFrame:imageViewFrame];
-        return;
-    }
-
-    CGSize boundsSize = self.bounds.size;
-    CGRect frameToCenter = self.imageView.frame;
-
-    if (frameToCenter.size.width < boundsSize.width) {
-        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2.0;
-    }
-    else {
-        frameToCenter.origin.x = 0.0;
-    }
-
-    if (frameToCenter.size.height < boundsSize.height) {
-        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2.0;
-    }
-    else {
-        frameToCenter.origin.y = 0.0;
-    }
-
-    self.imageView.frame = frameToCenter;
+    [self.scrollView addGestureRecognizer:doubleTapGesture];
+    
+    [self addSubview:self.scrollView];
+    NSDictionary *viewDictionary = @{@"scrollView": self.scrollView};
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|" options:0 metrics:nil views:viewDictionary];
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|" options:0 metrics:nil views:viewDictionary];
+    [self addConstraints:verticalConstraints];
+    [self addConstraints:horizontalConstraints];
 }
 
 #pragma mark - Gestures
-- (void)zoomInOutGesture:(UITapGestureRecognizer *)recognizer
+- (void)doubleTapGestureAction:(UITapGestureRecognizer *)recognizer
 {
     if (self.image == nil) {
         return;
     }
-
-    if (self.zoomScale != self.minimumZoomScale) {
-        [self setZoomScale:self.minimumZoomScale animated:YES];
+    
+    if (self.scrollView.zoomScale != self.scrollView.minimumZoomScale) {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+        [self.scrollView layoutSubviews];
     }
     else {
         CGPoint touchPoint = [recognizer locationInView:self.imageView];
-        CGFloat newZoomScale = (self.maximumZoomScale + self.minimumZoomScale) / 2;
+        CGFloat newZoomScale = (self.scrollView.maximumZoomScale + self.scrollView.minimumZoomScale) / 2;
         [self zoomToPoint:touchPoint withScale:newZoomScale animated:YES];
     }
 }
@@ -130,7 +114,7 @@
 {
     CGFloat xsize = self.bounds.size.width / scale;
     CGFloat ysize = self.bounds.size.height / scale;
-    [self zoomToRect:CGRectMake(zoomPoint.x - xsize / 2, zoomPoint.y - ysize / 2, xsize, ysize) animated:YES];
+    [self.scrollView zoomToRect:CGRectMake(zoomPoint.x - xsize / 2, zoomPoint.y - ysize / 2, xsize, ysize) animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -156,24 +140,38 @@
 }
 
 #pragma mark - Properties
+- (UIScrollView *)scrollView
+{
+    if (!_scrollView) {
+        __UIScrollView *scrollView = [__UIScrollView new];
+        [scrollView setZoomableView:self];
+        [scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        _scrollView = scrollView;
+    }
+    return _scrollView;
+}
+
 - (UIImageView *)imageView
 {
     if (!_imageView) {
         _imageView = [UIImageView new];
-        [_imageView setContentMode:UIViewContentModeScaleToFill];
     }
     return _imageView;
 }
 
-- (BOOL)isZommed
+- (BOOL)isZoomed
 {
-    return self.zoomScale == self.minimumZoomScale ? NO : YES;
+    return self.scrollView.zoomScale == self.scrollView.minimumZoomScale ? NO : YES;
 }
 
 #pragma mark - UIImageView Properties
 - (UIImage *)image { return self.imageView.image; }
 
-- (void)setImage:(UIImage *)image { [self.imageView setImage:image]; }
+- (void)setImage:(UIImage *)image
+{
+    [self.imageView setImage:image];
+}
 
 - (UIImage *)highlightedImage { return self.imageView.highlightedImage; }
 
@@ -202,5 +200,38 @@
 - (UIColor *)tintColor { return self.imageView.tintColor; }
 
 - (void)setTintColor:(UIColor *)tintColor { [self.imageView setTintColor:tintColor]; }
+
+@end
+
+@implementation __UIScrollView
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if (!self.zoomableView.isZoomed && !CGRectEqualToRect(self.bounds, self.zoomableView.imageView.frame)) {
+        CGRect imageViewFrame = [self.zoomableView.imageView.image frameOfFitInRect:self.bounds];
+        [self.zoomableView.imageView setFrame:imageViewFrame];
+        return;
+    }
+    
+    CGSize boundsSize = self.bounds.size;
+    CGRect frameToCenter = self.zoomableView.imageView.frame;
+    
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2.0;
+    }
+    else {
+        frameToCenter.origin.x = 0.0;
+    }
+    
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2.0;
+    }
+    else {
+        frameToCenter.origin.y = 0.0;
+    }
+    
+    [self.zoomableView.imageView setFrame:frameToCenter];
+}
 
 @end

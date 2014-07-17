@@ -21,14 +21,14 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@import UIKit.UIScrollView;
+@import UIKit.UIView;
 
-@interface JSZoomableImageView : UIScrollView <UIScrollViewDelegate>
+@interface JSZoomableImageView : UIView
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *highlightedImage NS_AVAILABLE_IOS(3_0);      // default is nil
 
-@property (nonatomic, readonly) BOOL isZommed;
+@property (nonatomic, readonly) BOOL isZoomed;
 
 @property (nonatomic, getter=isHighlighted) BOOL highlighted NS_AVAILABLE_IOS(3_0); // default is NO
 
