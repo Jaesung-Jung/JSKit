@@ -123,6 +123,13 @@
     return self.imageView;
 }
 
+#pragma mark - UIView
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    [self.scrollView setBackgroundColor:backgroundColor];
+}
+
 #pragma mark - UIImageView
 - (void)startAnimating
 {
