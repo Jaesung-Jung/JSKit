@@ -22,19 +22,20 @@
 //
 
 // Foundation+JSKit
-#import "NSDate+String.h"
-#import "NSObject+Associated.h"
-#import "NSString+CharacterCount.h"
+#import "Foundation+JSKit/NSDate+String.h"
+#import "Foundation+JSKit/NSDate+String.h"
+#import "Foundation+JSKit/NSObject+Associated.h"
+#import "Foundation+JSKit/NSString+CharacterCount.h"
 
 // UIKit+JSkit
-#import "NSLayoutConstraint+Creation.h"
-#import "UIColor+Colors.h"
-#import "UIControl+Event.h"
-#import "UIImage+BlurEffects.h"
-#import "UIImage+Color.h"
-#import "UIView+Animation.h"
-#import "UIView+Properties.h"
-#import "UIView+Snapshot.h"
+#import "UIKit+JSKit/NSLayoutConstraint+Creation.h"
+#import "UIKit+JSKit/UIColor+Colors.h"
+#import "UIKit+JSKit/UIControl+Event.h"
+#import "UIKit+JSKit/UIImage+BlurEffects.h"
+#import "UIKit+JSKit/UIImage+Color.h"
+#import "UIKit+JSKit/UIView+Animation.h"
+#import "UIKit+JSKit/UIView+Properties.h"
+#import "UIKit+JSKit/UIView+Snapshot.h"
 
 // JSKit
 #import "JSAnimationStep.h"
