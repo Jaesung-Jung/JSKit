@@ -47,6 +47,8 @@
 #define DEVICE_IS_PHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
 #define DEVICE_IS_PAD   UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
+#define loop(n) for (NSUInteger i = 0; i < n; i++)
+
 #define XCODE_COLORS_PLUGIN     1
 #if XCODE_COLORS_PLUGIN
 // How to apply color formatting to your log statements:
