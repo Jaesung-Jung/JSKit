@@ -69,14 +69,14 @@ static void *kControlBlocks;
         events = [NSMutableDictionary dictionary];
         [self associateValue:events withKey:&kControlBlocks];
     }
-    
+
     NSNumber *key = @(controlEvents);
     NSMutableSet *handlers = events[key];
     if (!handlers) {
         handlers = [NSMutableSet set];
         events[key] = handlers;
     }
-    
+
     JSEventHandler *target = [[JSEventHandler alloc] initWithBlock:block forControlEvents:controlEvents];
     [handlers addObject:target];
     [self addTarget:target action:@selector(invoke:) forControlEvents:controlEvents];
@@ -89,17 +89,17 @@ static void *kControlBlocks;
         events = [NSMutableDictionary dictionary];
         [self associateValue:events withKey:&kControlBlocks];
     }
-    
+
     NSNumber *key = @(controlEvents);
     NSSet *handlers = events[key];
-    
+
     if (!handlers)
         return;
-    
+
     [handlers enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self removeTarget:obj action:NULL forControlEvents:controlEvents];
     }];
-    
+
     [events removeObjectForKey:key];
 }
 
@@ -110,13 +110,13 @@ static void *kControlBlocks;
         events = [NSMutableDictionary dictionary];
         [self associateValue:events withKey:&kControlBlocks];
     }
-    
+
     NSNumber *key = @(controlEvents);
     NSSet *handlers = events[key];
-    
+
     if (!handlers)
         return NO;
-    
+
     return [handlers count];
 }
 

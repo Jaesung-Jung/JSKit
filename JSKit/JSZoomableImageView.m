@@ -77,13 +77,13 @@
     [self.scrollView setDecelerationRate:UIScrollViewDecelerationRateFast];
     [self.scrollView setMaximumZoomScale:4.0];
     [self.scrollView addSubview:self.imageView];
-    
+
     [self setClipsToBounds:YES];
-    
+
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapGestureAction:)];
     [doubleTapGesture setNumberOfTapsRequired:2];
     [self.scrollView addGestureRecognizer:doubleTapGesture];
-    
+
     [self addSubview:self.scrollView];
     NSDictionary *viewDictionary = @{@"scrollView": self.scrollView};
     NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|" options:0 metrics:nil views:viewDictionary];
@@ -98,7 +98,7 @@
     if (self.image == nil) {
         return;
     }
-    
+
     if (self.scrollView.zoomScale != self.scrollView.minimumZoomScale) {
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
         [self.scrollView layoutSubviews];
@@ -153,7 +153,7 @@
         __UIScrollView *scrollView = [__UIScrollView new];
         [scrollView setZoomableView:self];
         [scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
+
         _scrollView = scrollView;
     }
     return _scrollView;
@@ -220,24 +220,24 @@
         [self.zoomableView.imageView setFrame:imageViewFrame];
         return;
     }
-    
+
     CGSize boundsSize = self.bounds.size;
     CGRect frameToCenter = self.zoomableView.imageView.frame;
-    
+
     if (frameToCenter.size.width < boundsSize.width) {
         frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2.0;
     }
     else {
         frameToCenter.origin.x = 0.0;
     }
-    
+
     if (frameToCenter.size.height < boundsSize.height) {
         frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2.0;
     }
     else {
         frameToCenter.origin.y = 0.0;
     }
-    
+
     [self.zoomableView.imageView setFrame:frameToCenter];
 }
 

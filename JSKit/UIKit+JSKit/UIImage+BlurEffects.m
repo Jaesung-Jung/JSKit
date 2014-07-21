@@ -156,10 +156,10 @@
         NSLog (@"*** error: maskImage must be backed by a CGImage: %@", maskImage);
         return nil;
     }
-    
+
     CGRect imageRect = { CGPointZero, self.size };
     UIImage *effectImage = self;
-    
+
     BOOL hasBlur = blurRadius > __FLT_EPSILON__;
     BOOL hasSaturationChange = fabs(saturationDeltaFactor - 1.) > __FLT_EPSILON__;
     if (hasBlur || hasSaturationChange) {
@@ -168,13 +168,13 @@
         CGContextScaleCTM(effectInContext, 1.0, -1.0);
         CGContextTranslateCTM(effectInContext, 0, -self.size.height);
         CGContextDrawImage(effectInContext, imageRect, self.CGImage);
-        
+
         vImage_Buffer effectInBuffer;
         effectInBuffer.data     = CGBitmapContextGetData(effectInContext);
         effectInBuffer.width    = CGBitmapContextGetWidth(effectInContext);
         effectInBuffer.height   = CGBitmapContextGetHeight(effectInContext);
         effectInBuffer.rowBytes = CGBitmapContextGetBytesPerRow(effectInContext);
-        
+
         UIGraphicsBeginImageContextWithOptions(self.size, NO, [[UIScreen mainScreen] scale]);
         CGContextRef effectOutContext = UIGraphicsGetCurrentContext();
         vImage_Buffer effectOutBuffer;
@@ -182,7 +182,7 @@
         effectOutBuffer.width    = CGBitmapContextGetWidth(effectOutContext);
         effectOutBuffer.height   = CGBitmapContextGetHeight(effectOutContext);
         effectOutBuffer.rowBytes = CGBitmapContextGetBytesPerRow(effectOutContext);
-        
+
         if (hasBlur) {
             // A description of how to compute the box kernel width from the Gaussian
             // radius (aka standard deviation) appears in the SVG spec:
@@ -231,21 +231,21 @@
         if (!effectImageBuffersAreSwapped)
             effectImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        
+
         if (effectImageBuffersAreSwapped)
             effectImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     }
-    
+
     // set up output context
     UIGraphicsBeginImageContextWithOptions(self.size, NO, [[UIScreen mainScreen] scale]);
     CGContextRef outputContext = UIGraphicsGetCurrentContext();
     CGContextScaleCTM(outputContext, 1.0, -1.0);
     CGContextTranslateCTM(outputContext, 0, -self.size.height);
-    
+
     // draw base image
     CGContextDrawImage(outputContext, imageRect, self.CGImage);
-    
+
     // draw effect image
     if (hasBlur) {
         CGContextSaveGState(outputContext);
@@ -255,7 +255,7 @@
         CGContextDrawImage(outputContext, imageRect, effectImage.CGImage);
         CGContextRestoreGState(outputContext);
     }
-    
+
     // add in color tint
     if (tintColor) {
         CGContextSaveGState(outputContext);
@@ -263,11 +263,11 @@
         CGContextFillRect(outputContext, imageRect);
         CGContextRestoreGState(outputContext);
     }
-    
+
     // output image is ready
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     return outputImage;
 }
 

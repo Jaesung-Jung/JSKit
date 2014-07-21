@@ -28,10 +28,10 @@
     if (size.height > rect.size.height) {
         size = [self sizeOfFitAtHeight:rect.size.height];
     }
-    
+
     CGPoint center = CGPointMake((rect.size.width - size.width) / 2.0,
                                  (rect.size.height - size.height) / 2.0);
-    
+
     return CGRectMake(center.x, center.y, size.width, size.height);
 }
 

@@ -201,7 +201,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
                 _encrypted = YES;
             }
             checkedEncrypt = YES;
-            
+
             // Calculate total size of files and counting files
             unz_file_info fileInfo;
             char contentFileNameBuffer[256] = { 0x00, };
@@ -238,7 +238,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         NSUInteger endLocation = [path rangeOfString:@"." options:NSBackwardsSearch].location;
         _zipFileName = [path substringWithRange:NSMakeRange(startLocation, endLocation - startLocation)];
         _zipFilePath = path;
-        
+
         unzGoToFirstFile(self.zipFile);
     }
     else {
@@ -318,15 +318,15 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
             [JSZipArchive setError:error code:resultCode path:self.zipFilePath];
             break;
         }
-        
+
         // Read file info
         unz_file_info fileInfo;
         char contentFileNameBuffer[256] = { 0x00, };
         unzGetCurrentFileInfo(self.zipFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
-        
+
         // Convert file name
         NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
-        
+
         // Create folder and extract file
         BOOL isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
         NSString *fullPath = [path stringByAppendingPathComponent:contentName];
@@ -364,7 +364,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         // Set file modification date
         NSDictionary *fileAttributes = @{NSFileModificationDate: [JSZipArchive dateFromZipTime:fileInfo.tmu_date]};
         [fileManager setAttributes:fileAttributes ofItemAtPath:fullPath error:nil];
-        
+
         unzCloseCurrentFile(self.zipFile);
     } while (unzGoToNextFile(self.zipFile) != UNZ_END_OF_LIST_OF_FILE);
 
@@ -462,15 +462,15 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         else {
             unzOpenCurrentFile(self.zipFile);
         }
-        
+
         // Read file info
         unz_file_info fileInfo;
         char contentFileNameBuffer[256] = { 0x00, };
         unzGetCurrentFileInfo(self.zipFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
-        
+
         // Convert file name
         NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
-        
+
         BOOL isDirectory = [contentName characterAtIndex:[contentName length] - 1] == '/' ? YES : NO;
         if (!isDirectory) {
             [fileList addObject:contentName];
@@ -505,7 +505,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
             unz_file_info fileInfo;
             char contentFileNameBuffer[256] = { 0x00, };
             unzGetCurrentFileInfo(self.zipFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
-            
+
             // Read file name and find string encoding
             NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
             if ([contentName isEqualToString:firstFileName]) {
@@ -551,7 +551,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
     unz_file_info fileInfo;
     char contentFileNameBuffer[256] = { 0x00, };
     unzGetCurrentFileInfo(self.zipFile, &fileInfo, contentFileNameBuffer, sizeof(contentFileNameBuffer) - 1, NULL, 0, NULL, 0);
-    
+
     NSString *contentName = [NSString stringWithCString:contentFileNameBuffer encoding:[self.encoding unsignedIntegerValue]];
     NSInteger readByte = 0;
     Byte block[BlockSize] = { 0x00, };
@@ -560,7 +560,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
         readByte = unzReadCurrentFile(self.zipFile, block, sizeof(block));
         [data appendBytes:block length:readByte];
     } while (readByte > 0);
-    
+
     unzippedData = [JSUnzippedData new];
     unzippedData.name = contentName;
     unzippedData.modificationDate = [JSZipArchive dateFromZipTime:fileInfo.tmu_date];
@@ -812,7 +812,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
                 errorCode = code;
                 description = [NSString stringWithFormat:@"Failed file open. (%@)", path];
                 break;
-            
+
             case JSZipArchiveErrorFileIsNotOpened:
                 errorCode = code;
                 description = @"File is not opened.";
