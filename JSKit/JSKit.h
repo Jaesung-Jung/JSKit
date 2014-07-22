@@ -47,7 +47,7 @@
 #define DEVICE_IS_PHONE UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
 #define DEVICE_IS_PAD   UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
-#define loop(n) for (NSUInteger i = 0; i < n; i++)
+#define loop(n) for (NSUInteger jskit_loop_counter = 0; jskit_loop_counter < n; jskit_loop_counter++)
 
 #define XCODE_COLORS_PLUGIN     1
 #if XCODE_COLORS_PLUGIN
