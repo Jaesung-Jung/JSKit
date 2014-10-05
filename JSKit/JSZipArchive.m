@@ -774,7 +774,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
 
 + (NSDate *)dateFromZipTime:(tm_unz)time
 {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *dateComponents = [NSDateComponents new];
     [dateComponents setYear:time.tm_year];
     [dateComponents setMonth:time.tm_mon + 1];
@@ -788,7 +788,7 @@ typedef NS_ENUM(NSUInteger, JSZipArchiveMode) {
 
 + (tm_zip)zipTimeFromDate:(NSDate *)date
 {
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *dateComponents = [gregorianCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:date];
     tm_zip zipTime = {
         .tm_year = (uInt)[dateComponents year],
