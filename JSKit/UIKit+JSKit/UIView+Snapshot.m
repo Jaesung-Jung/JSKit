@@ -52,4 +52,19 @@
     return snapshot;
 }
 
+- (UIImage *)snapshotWithFrame:(CGRect)frame snapshotSize:(CGSize)snapshotSize
+{
+    return [self snapshotWithFrame:frame snapshotSize:snapshotSize scale:0.0];
+}
+
+- (UIImage *)snapshotWithFrame:(CGRect)frame snapshotSize:(CGSize)snapshotSize scale:(CGFloat)scale
+{
+    UIGraphicsBeginImageContextWithOptions(frame.size, NO, scale);
+    [self drawViewHierarchyInRect:CGRectMake(-frame.origin.x, -frame.origin.y, snapshotSize.width, snapshotSize.height) afterScreenUpdates:YES];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return snapshot;
+}
+
 @end

@@ -60,4 +60,25 @@
  */
 - (UIImage *)snapshotWithFrame:(CGRect)frame scale:(CGFloat)scale NS_AVAILABLE_IOS(7_0);
 
+/*!
+ * Returns a image object at the a snapshot of the complete view hierarchy as visible onscreen using the given frame and scale.
+ *
+ * @params frame A rectangle specified in the local coordinate system of the view.
+ * @params snapshotSize Size for snapshot.
+ *
+ * @return A image object at the a snapshot of the complete view hierarchy as visible onscreen.
+ */
+- (UIImage *)snapshotWithFrame:(CGRect)frame snapshotSize:(CGSize)snapshotSize NS_AVAILABLE_IOS(7_0);
+
+/*!
+ * Returns a image object at the a snapshot of the complete view hierarchy as visible onscreen using the given frame and scale.
+ *
+ * @params frame A rectangle specified in the local coordinate system of the view.
+ * @params snapshotSize Size for snapshot.
+ * @params scale The scale factor to apply to the bitmap. If you specify a value of 0.0, the scale factor is set to the scale factor of the device’s main screen.
+ *
+ * @return A image object at the a snapshot of the complete view hierarchy as visible onscreen.
+ */
+- (UIImage *)snapshotWithFrame:(CGRect)frame snapshotSize:(CGSize)snapshotSize scale:(CGFloat)scale NS_AVAILABLE_IOS(7_0);
+
 @end
